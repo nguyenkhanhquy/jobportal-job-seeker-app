@@ -5,7 +5,7 @@ import { Image, StyleSheet, View } from "react-native";
 
 import logo from "../../assets/img/logo.png";
 
-export default function Intro({ navigation }) {
+const Intro = ({ navigation }) => {
     // useEffect(() => {
     //     const checkToken = async () => {
     //         const token = await getToken();
@@ -32,7 +32,7 @@ export default function Intro({ navigation }) {
             <Image source={logo} style={styles.image} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -49,3 +49,5 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 });
+
+export default Intro;
