@@ -1,1 +1,1 @@
-# jobportal-job-seeker-app
+# Job Portal - Job Seeker App
