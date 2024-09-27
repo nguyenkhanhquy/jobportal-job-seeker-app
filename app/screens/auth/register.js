@@ -161,8 +161,7 @@ const RegisterPage = ({ navigation }) => {
 
                 <View className="self-center w-4/5 h-px bg-gray-300 mb-2" />
 
-                {/* <TouchableOpacity onPress={() => navigation.navigate("Home")}> */}
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                     <Text className="self-center text-sm font-bold text-green-600 mb-5">
                         Trải nghiệm không cần đăng nhập
                     </Text>
