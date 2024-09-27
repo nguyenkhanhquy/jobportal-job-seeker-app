@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { Alert, Image, Switch, Text, TouchableOpacity, View } from "react-native";
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
-// import { register } from "../../services/AuthAPIService";
 
-// const emailRegex =
-//     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import { register } from "../../services/authAPIService";
+
+const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const RegisterPage = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPass, setShowConfirmPass] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -21,67 +23,67 @@ const RegisterPage = ({ navigation }) => {
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-    // const validateInputs = () => {
-    //     let valid = true;
+    const validateInputs = () => {
+        let valid = true;
 
-    //     // Validate Full Name
-    //     if (!fullName) {
-    //         setFullNameError("Họ và tên không được để trống");
-    //         valid = false;
-    //     } else {
-    //         setFullNameError("");
-    //     }
+        // Validate Full Name
+        if (!fullName) {
+            setFullNameError("Họ và tên không được để trống");
+            valid = false;
+        } else {
+            setFullNameError("");
+        }
 
-    //     // Validate Email
-    //     if (!email) {
-    //         setEmailError("Email không được để trống");
-    //         valid = false;
-    //     } else if (!emailRegex.test(email.toLowerCase())) {
-    //         setEmailError("Email không đúng định dạng");
-    //         valid = false;
-    //     } else {
-    //         setEmailError("");
-    //     }
+        // Validate Email
+        if (!email) {
+            setEmailError("Email không được để trống");
+            valid = false;
+        } else if (!emailRegex.test(email.toLowerCase())) {
+            setEmailError("Email không đúng định dạng");
+            valid = false;
+        } else {
+            setEmailError("");
+        }
 
-    //     // Validate Password
-    //     if (!password) {
-    //         setPasswordError("Mật khẩu không được để trống");
-    //         valid = false;
-    //     } else {
-    //         setPasswordError("");
-    //     }
+        // Validate Password
+        if (!password) {
+            setPasswordError("Mật khẩu không được để trống");
+            valid = false;
+        } else {
+            setPasswordError("");
+        }
 
-    //     // Validate Confirm Password
-    //     if (!confirmPassword) {
-    //         setConfirmPasswordError("Vui lòng nhập lại mật khẩu");
-    //         valid = false;
-    //     } else if (password !== confirmPassword) {
-    //         setConfirmPasswordError("Mật khẩu không trùng khớp");
-    //         valid = false;
-    //     } else {
-    //         setConfirmPasswordError("");
-    //     }
+        // Validate Confirm Password
+        if (!confirmPassword) {
+            setConfirmPasswordError("Vui lòng nhập lại mật khẩu");
+            valid = false;
+        } else if (password !== confirmPassword) {
+            setConfirmPasswordError("Mật khẩu không trùng khớp");
+            valid = false;
+        } else {
+            setConfirmPasswordError("");
+        }
 
-    //     return valid;
-    // };
+        return valid;
+    };
 
-    // const handleRegister = async () => {
-    //     if (!validateInputs()) {
-    //         return;
-    //     }
+    const handleRegister = async () => {
+        if (!validateInputs()) {
+            return;
+        }
 
-    //     try {
-    //         const data = await register(email, fullName, password);
-    //         if (data.success) {
-    //             Alert.alert("Đăng ký thành công", data.message);
-    //             navigation.navigate("Login");
-    //         } else {
-    //             Alert.alert("Đăng ký không thành công", data.message);
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Đăng ký không thành công", "Đã xảy ra lỗi khi đăng ký. Hãy thử lại.");
-    //     }
-    // };
+        try {
+            const data = await register(email, fullName, password);
+            if (data.success) {
+                Alert.alert("Đăng ký thành công", data.message);
+                navigation.navigate("Login");
+            } else {
+                Alert.alert("Đăng ký không thành công", data.message);
+            }
+        } catch (error) {
+            Alert.alert("Đăng ký không thành công", "Đã xảy ra lỗi khi đăng ký. Hãy thử lại.");
+        }
+    };
 
     return (
         <View className="flex-1 bg-white items-center px-7 justify-between">
@@ -142,7 +144,7 @@ const RegisterPage = ({ navigation }) => {
             {/* Register Button */}
             <TouchableOpacity
                 className={`w-full rounded-full py-3 mb-7 items-center ${isChecked ? "bg-green-600" : "bg-gray-400"}`}
-                // onPress={handleRegister}
+                onPress={handleRegister}
                 disabled={!isChecked}
             >
                 <Text className="text-white text-lg">Đăng ký</Text>
