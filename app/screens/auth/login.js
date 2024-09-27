@@ -9,8 +9,8 @@ import { login } from "../../services/authAPIService";
 
 import { handleLoginResponse } from "../../utils/authStorage";
 
-// const emailRegex =
-//     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState("");
@@ -32,31 +32,31 @@ const Login = ({ navigation }) => {
         }, [])
     );
 
-    // const validateInputs = () => {
-    //     let valid = true;
-    //     setEmailError("");
-    //     setPasswordError("");
+    const validateInputs = () => {
+        let valid = true;
+        setEmailError("");
+        setPasswordError("");
 
-    //     if (!email) {
-    //         setEmailError("Email không được để trống");
-    //         valid = false;
-    //     } else if (!emailRegex.test(email.toLowerCase())) {
-    //         setEmailError("Email không đúng định dạng");
-    //         valid = false;
-    //     }
+        if (!email) {
+            setEmailError("Email không được để trống");
+            valid = false;
+        } else if (!emailRegex.test(email.toLowerCase())) {
+            setEmailError("Email không đúng định dạng");
+            valid = false;
+        }
 
-    //     if (!password) {
-    //         setPasswordError("Mật khẩu không được để trống");
-    //         valid = false;
-    //     }
+        if (!password) {
+            setPasswordError("Mật khẩu không được để trống");
+            valid = false;
+        }
 
-    //     return valid;
-    // };
+        return valid;
+    };
 
     const handleLogin = async () => {
-        // if (!validateInputs()) {
-        //     return;
-        // }
+        if (!validateInputs()) {
+            return;
+        }
 
         try {
             const data = await login(email, password);
