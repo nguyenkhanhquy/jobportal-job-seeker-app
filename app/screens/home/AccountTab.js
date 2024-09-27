@@ -8,7 +8,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { logout } from "../../services/authAPIService";
 import { getUsersInfo } from "../../services/usersAPIService";
-// import { updateAvatar } from "../../services/jobSeekerAPIService";
+import { updateAvatar } from "../../services/jobSeekerAPIService";
 
 import { getToken, deleteToken } from "../../utils/authStorage";
 
@@ -40,6 +40,61 @@ const AccountTab = ({ navigation }) => {
             fetchUserInfo();
         }, [])
     );
+
+    const selectImage = async () => {
+        // Yêu cầu quyền truy cập thư viện ảnh
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== "granted") {
+            Alert.alert("Quyền truy cập bị từ chối!", "Bạn cần cấp quyền để chọn ảnh.");
+            return;
+        }
+
+        // Mở thư viện ảnh
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true, // Cho phép chỉnh sửa hình ảnh
+            aspect: [1, 1], // Cắt ảnh theo tỷ lệ 1:1 (hình vuông)
+            quality: 1, // Chất lượng hình ảnh (từ 0 đến 1)
+        });
+
+        // Nếu người dùng không hủy chọn ảnh
+        if (!result.canceled) {
+            const selectedImage = result.assets[0];
+            const { uri } = selectedImage;
+            const fileName = uri.split("/").pop(); // Lấy tên tệp từ đường dẫn uri
+
+            const fileExtension = uri.split(".").pop().toLowerCase();
+            const type = `image/${fileExtension}`;
+
+            // Tạo đối tượng file
+            const avatar = {
+                uri,
+                type: type || "image/jpeg",
+                name: fileName,
+            };
+
+            try {
+                setLoading(true);
+                const token = await getToken();
+                if (token) {
+                    const data = await updateAvatar(token, avatar);
+                    if (data.success) {
+                        fetchUserInfo();
+                        Alert.alert("Success", data.message);
+                    } else {
+                        Alert.alert("Error", data.message);
+                    }
+                }
+            } catch (error) {
+                Alert.alert("Logout failed", "An error occurred. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            Alert.alert("Đã hủy", "Bạn đã hủy chọn ảnh.");
+        }
+    };
 
     const handleLogout = async () => {
         Alert.alert(
@@ -111,7 +166,7 @@ const AccountTab = ({ navigation }) => {
                             )}
                             <TouchableOpacity
                                 className="absolute right-0 bottom-0 bg-gray-600 rounded-full p-1 border-2 border-white"
-                                // onPress={selectImage}
+                                onPress={selectImage}
                             >
                                 <Ionicons name="camera-outline" size={20} color="#fff" />
                             </TouchableOpacity>
