@@ -8,15 +8,15 @@ const Starter = ({ navigation }) => {
                 Chào mừng đến với <Text style={[styles.welcome, styles.title]}> Job Portal!</Text>
             </Text>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Auth", { screen: "Login" })}>
                 <Text style={styles.buttonText}>Đăng nhập</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={[styles.button, styles.registerButton]}
-                onPress={() => navigation.navigate("Register")}
+                onPress={() => navigation.navigate("Auth", { screen: "Register" })}
             >
-                <Text style={styles.buttonText}>Đăng ký tài khoản</Text>
+                <Text style={styles.buttonText}>Đăng ký</Text>
             </TouchableOpacity>
         </View>
     );

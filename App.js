@@ -1,13 +1,7 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
-import Intro from "./app/screens/intro/intro";
+import AppNavigator from "./app/components/navigators/AppNavigator";
 
 export default function App() {
-    return (
-        <>
-            <Intro />
-            <StatusBar style="auto" />
-        </>
-    );
+    return <AppNavigator />;
 }
