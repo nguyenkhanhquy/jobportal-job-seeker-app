@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Image, Switch, Text, TouchableOpacity, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
 
@@ -22,6 +23,23 @@ const RegisterPage = ({ navigation }) => {
     const [fullNameError, setFullNameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Reset all states when the screen is focused
+            setEmail("");
+            setFullName("");
+            setPassword("");
+            setConfirmPassword("");
+            setShowPassword(false);
+            setShowConfirmPass(false);
+            setIsChecked(false);
+            setEmailError("");
+            setFullNameError("");
+            setPasswordError("");
+            setConfirmPasswordError("");
+        }, [])
+    );
 
     const validateInputs = () => {
         let valid = true;
