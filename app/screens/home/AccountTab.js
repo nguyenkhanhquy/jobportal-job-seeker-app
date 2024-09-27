@@ -6,7 +6,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 
-// import { logout } from "../../services/authAPIService";
+import { logout } from "../../services/authAPIService";
 import { getUsersInfo } from "../../services/usersAPIService";
 // import { updateAvatar } from "../../services/jobSeekerAPIService";
 
@@ -41,41 +41,41 @@ const AccountTab = ({ navigation }) => {
         }, [])
     );
 
-    // const handleLogout = async () => {
-    //     Alert.alert(
-    //         "Xác nhận đăng xuất",
-    //         "Bạn có chắc chắn muốn đăng xuất?",
-    //         [
-    //             {
-    //                 text: "Hủy",
-    //             },
-    //             {
-    //                 text: "Đăng xuất",
-    //                 onPress: async () => {
-    //                     try {
-    //                         setLoading(true);
-    //                         const token = await getToken();
-    //                         if (token) {
-    //                             const data = await logout(token);
+    const handleLogout = async () => {
+        Alert.alert(
+            "Xác nhận đăng xuất",
+            "Bạn có chắc chắn muốn đăng xuất?",
+            [
+                {
+                    text: "Hủy",
+                },
+                {
+                    text: "Đăng xuất",
+                    onPress: async () => {
+                        try {
+                            setLoading(true);
+                            const token = await getToken();
+                            if (token) {
+                                const data = await logout(token);
 
-    //                             if (data.success) {
-    //                                 deleteToken();
-    //                                 setUserInfo(null);
-    //                                 navigation.navigate("Login");
-    //                                 Alert.alert("Success", data.message);
-    //                             }
-    //                         }
-    //                     } catch (error) {
-    //                         Alert.alert("Logout failed", "An error occurred. Please try again.");
-    //                     } finally {
-    //                         setLoading(false);
-    //                     }
-    //                 },
-    //             },
-    //         ],
-    //         { cancelable: false }
-    //     );
-    // };
+                                if (data.success) {
+                                    deleteToken();
+                                    setUserInfo(null);
+                                    navigation.navigate("Login");
+                                    Alert.alert("Success", data.message);
+                                }
+                            }
+                        } catch (error) {
+                            Alert.alert("Logout failed", "An error occurred. Please try again.");
+                        } finally {
+                            setLoading(false);
+                        }
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
 
     if (loading) {
         return (
@@ -167,7 +167,7 @@ const AccountTab = ({ navigation }) => {
                         <TouchableOpacity
                             className="bg-white p-3 rounded-lg"
                             style={styles.shadowStyle}
-                            // onPress={handleLogout}
+                            onPress={handleLogout}
                         >
                             <Text className="text-lg font-medium text-red-600">Đăng xuất</Text>
                         </TouchableOpacity>
