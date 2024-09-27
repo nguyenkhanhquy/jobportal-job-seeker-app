@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Alert, Image, Switch, Text, TouchableOpacity, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
-// import { login } from "../../services/AuthAPIService";
-// import { getToken, handleLoginResponse } from "../../utils/AuthStorage";
 
-// const emailRegex =
-//     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import { login } from "../../services/authAPIService";
+
+import { handleLoginResponse } from "../../utils/authStorage";
+
+const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState("");
@@ -16,46 +20,60 @@ const Login = ({ navigation }) => {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    // const validateInputs = () => {
-    //     let valid = true;
-    //     setEmailError("");
-    //     setPasswordError("");
+    useFocusEffect(
+        React.useCallback(() => {
+            // Reset all states when the screen is focused
+            setEmail("");
+            setPassword("");
+            setShowPassword(false);
+            setIsChecked(false);
+            setEmailError("");
+            setPasswordError("");
+        }, [])
+    );
 
-    //     if (!email) {
-    //         setEmailError("Email không được để trống");
-    //         valid = false;
-    //     } else if (!emailRegex.test(email.toLowerCase())) {
-    //         setEmailError("Email không đúng định dạng");
-    //         valid = false;
-    //     }
+    const validateInputs = () => {
+        let valid = true;
+        setEmailError("");
+        setPasswordError("");
 
-    //     if (!password) {
-    //         setPasswordError("Mật khẩu không được để trống");
-    //         valid = false;
-    //     }
+        if (!email) {
+            setEmailError("Email không được để trống");
+            valid = false;
+        } else if (!emailRegex.test(email.toLowerCase())) {
+            setEmailError("Email không đúng định dạng");
+            valid = false;
+        }
 
-    //     return valid;
-    // };
+        if (!password) {
+            setPasswordError("Mật khẩu không được để trống");
+            valid = false;
+        }
 
-    // const handleLogin = async () => {
-    //     if (!validateInputs()) return;
+        return valid;
+    };
 
-    //     try {
-    //         const data = await login(email, password);
+    const handleLogin = async () => {
+        if (!validateInputs()) {
+            return;
+        }
 
-    //         if (data.success) {
-    //             setEmail("");
-    //             setPassword("");
-    //             handleLoginResponse(data);
-    //             getToken();
-    //             navigation.navigate("Home");
-    //         } else {
-    //             Alert.alert("Đăng nhập không thành công", data.message);
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Đăng nhập không thành công", "Đã xảy ra lỗi khi đăng nhập. Hãy thử lại.");
-    //     }
-    // };
+        try {
+            const data = await login(email, password);
+            if (data.success) {
+                setEmail("");
+                setPassword("");
+                handleLoginResponse(data);
+                navigation.navigate("Home", {
+                    screen: "HomeTab",
+                });
+            } else {
+                Alert.alert("Đăng nhập không thành công", data.message);
+            }
+        } catch (error) {
+            Alert.alert("Đăng nhập không thành công", "Đã xảy ra lỗi khi đăng nhập. Hãy thử lại.");
+        }
+    };
 
     return (
         <View className="flex-1 bg-white items-center px-7 justify-between">
@@ -92,7 +110,7 @@ const Login = ({ navigation }) => {
             {/* Login Button */}
             <TouchableOpacity
                 className={`w-full rounded-full py-3 mb-10 items-center ${isChecked ? "bg-green-600" : "bg-gray-400"}`}
-                // onPress={handleLogin}
+                onPress={handleLogin}
                 disabled={!isChecked}
             >
                 <Text className="text-white text-lg">Đăng nhập</Text>
