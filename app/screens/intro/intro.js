@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
-// import { introspect } from "../../services/AuthAPIService";
-import { getToken } from "../../utils/authStorage";
+
+import { introspect } from "../../services/authAPIService";
+import { getToken, deleteToken } from "../../utils/authStorage";
 
 import logo from "../../assets/img/logo.png";
 
@@ -10,18 +11,22 @@ const Intro = ({ navigation }) => {
         const checkToken = async () => {
             const token = await getToken();
             if (token) {
-                // const data = await introspect(token);
-                // if (data.success) {
-                //     navigation.replace("Home");
-                //     return;
-                // }
+                const data = await introspect(token);
+                if (data.success) {
+                    navigation.replace("Home", {
+                        screen: "HomeTab",
+                    });
+                    return;
+                } else {
+                    deleteToken();
+                }
             }
             navigation.replace("Starter");
         };
 
         const timer = setTimeout(() => {
             checkToken();
-        }, 1200);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, [navigation]);
