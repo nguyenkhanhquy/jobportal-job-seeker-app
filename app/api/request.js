@@ -9,9 +9,9 @@ const handleError = (error) => {
     }
 };
 
-export const postRequest = async (url, body, config) => {
+export const postRequest = async (url, data, config) => {
     try {
-        const response = await axiosClient.post(url, body, config);
+        const response = await axiosClient.post(url, data, config);
         return response.data;
     } catch (error) {
         return handleError(error);
@@ -27,9 +27,9 @@ export const getRequest = async (url, config) => {
     }
 };
 
-export const putRequest = async (url, body, config) => {
+export const putRequest = async (url, data, config) => {
     try {
-        const response = await axiosClient.put(url, body, config);
+        const response = await axiosClient.put(url, data, config);
         return response.data;
     } catch (error) {
         return handleError(error);
