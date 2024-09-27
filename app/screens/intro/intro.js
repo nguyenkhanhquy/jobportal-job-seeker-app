@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 // import { introspect } from "../../services/AuthAPIService";
-import { getToken } from "../../utils/Storage";
+import { getToken } from "../../utils/authStorage";
 
 import logo from "../../assets/img/logo.png";
 
