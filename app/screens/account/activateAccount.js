@@ -26,24 +26,24 @@ const ActivateAccount = ({ route, navigation }) => {
         });
     };
 
-    // const handleSendOTP = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const data = await sendOtp(email);
+    const handleSendOTP = async () => {
+        try {
+            setLoading(true);
+            const data = await sendOtp(email);
 
-    //         if (data.success) {
-    //             showToast("success", "Success", data.message);
-    //             setOtpSent(true);
-    //         } else {
-    //             showToast("error", "Error", data.message);
-    //             console.log(data.message);
-    //         }
-    //     } catch (error) {
-    //         showToast("error", "Error", "An error occurred. Please try again.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+            if (data.success) {
+                showToast("success", "Success", data.message);
+                setOtpSent(true);
+            } else {
+                showToast("error", "Error", data.message);
+                console.log(data.message);
+            }
+        } catch (error) {
+            showToast("error", "Error", "An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // const handleConfirmOTP = async () => {
     //     try {
