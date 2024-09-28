@@ -9,6 +9,7 @@ import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";
 
 import ActivateAccount from "../../screens/account/activateAccount";
+import Profile from "../../screens/account/profile";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,11 @@ const AppNavigator = () => {
                 <Stack.Screen name="Home" component={MainTabNavigator} />
 
                 <Stack.Screen name="ActivateAccount" component={ActivateAccount} />
+                <Stack.Screen
+                    name="Profile"
+                    component={Profile}
+                    options={{ headerShown: true, headerTitle: "Thông tin cá nhân", headerTitleAlign: "center" }}
+                />
             </Stack.Navigator>
             <Toast />
         </NavigationContainer>
