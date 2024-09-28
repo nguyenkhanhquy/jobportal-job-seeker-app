@@ -2,8 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "../../screens/auth/login";
 import Register from "../../screens/auth/register";
-// import ForgotPassWordPage from "../../screens/auth/ForgotPasswordPage";
-// import ResetPassWordPage from "../../screens/auth/ResetPassWordPage";
+import ForgotPassWord from "../../screens/auth/forgotPassword";
+import ResetPassword from "../../screens/auth/resetPassword";
 
 const Stack = createStackNavigator();
 
@@ -12,16 +12,16 @@ const AuthNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="ForgotPassWord"
-                component={ForgotPassWordPage}
+                component={ForgotPassWord}
                 options={{ headerShown: true, headerTitle: "" }}
             />
             <Stack.Screen
-                name="ResetPassWord"
-                component={ResetPassWordPage}
+                name="ResetPassword"
+                component={ResetPassword}
                 options={{ headerShown: true, headerTitle: "" }}
-            /> */}
+            />
         </Stack.Navigator>
     );
 };

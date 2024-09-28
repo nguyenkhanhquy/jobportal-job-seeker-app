@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Image, Switch, Text, TouchableOpacity, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
@@ -77,6 +78,8 @@ const Login = ({ navigation }) => {
 
     return (
         <View className="flex-1 bg-white items-center px-7 justify-between">
+            <StatusBar style="auto" />
+
             <Image source={logo} className="w-40 h-40 mt-6" />
             <Text className="text-lg text-gray-800 mb-10 text-center">Chào mừng bạn đến với JOB PORTAL</Text>
             <Text className="text-2xl text-gray-800 mb-2 text-center">Đăng nhập</Text>
@@ -102,8 +105,7 @@ const Login = ({ navigation }) => {
                 error={passwordError}
             />
 
-            {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassWord")} className="self-end mb-8"> */}
-            <TouchableOpacity className="self-end mb-8">
+            <TouchableOpacity onPress={() => navigation.navigate("ForgotPassWord")} className="self-end mb-8">
                 <Text className="text-green-600 font-bold">Quên mật khẩu?</Text>
             </TouchableOpacity>
 
