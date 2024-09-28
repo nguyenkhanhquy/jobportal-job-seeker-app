@@ -45,26 +45,26 @@ const ActivateAccount = ({ route, navigation }) => {
         }
     };
 
-    // const handleConfirmOTP = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const token = await getToken();
-    //         if (token) {
-    //             const data = await activate(token, otp);
+    const handleConfirmOTP = async () => {
+        try {
+            setLoading(true);
+            const token = await getToken();
+            if (token) {
+                const data = await activate(token, otp);
 
-    //             if (data.success) {
-    //                 showToast("success", "Success", data.message);
-    //                 navigation.goBack();
-    //             } else {
-    //                 showToast("error", "Error", data.message);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         showToast("error", "Error", "An error occurred. Please try again.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+                if (data.success) {
+                    showToast("success", "Success", data.message);
+                    navigation.goBack();
+                } else {
+                    showToast("error", "Error", data.message);
+                }
+            }
+        } catch (error) {
+            showToast("error", "Error", "An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleBack = () => {
         if (!isPressed) {
