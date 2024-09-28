@@ -10,6 +10,7 @@ import MainTabNavigator from "./MainTabNavigator";
 
 import ActivateAccount from "../../screens/account/activateAccount";
 import Profile from "../../screens/account/profile";
+import ChangePassword from "../../screens/account/changePassword";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,11 @@ const AppNavigator = () => {
                     name="Profile"
                     component={Profile}
                     options={{ headerShown: true, headerTitle: "Thông tin cá nhân", headerTitleAlign: "center" }}
+                />
+                <Stack.Screen
+                    name="ChangePassword"
+                    component={ChangePassword}
+                    options={{ headerShown: true, headerTitle: "Đổi mật khẩu", headerTitleAlign: "center" }}
                 />
             </Stack.Navigator>
             <Toast />
