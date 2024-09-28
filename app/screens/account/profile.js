@@ -37,28 +37,31 @@ const Profile = ({ route, navigation }) => {
         setFullName(value);
     };
 
-    // const handleSave = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const token = await getToken();
-    //         if (token) {
-    //             const body = { fullName, address, workExperience };
+    const handleSave = async () => {
+        try {
+            setLoading(true);
+            const token = await getToken();
+            if (token) {
+                const body = { fullName, address, workExperience };
 
-    //             const data = await updateProfile(token, body);
+                const data = await updateProfile(token, body);
 
-    //             if (data.success) {
-    //                 Alert.alert("Thành công", "Cập nhật thông tin tài khoản thành công.");
-    //                 navigation.goBack();
-    //             } else {
-    //                 Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại.");
-    //             }
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Error", "An error occurred. Please try again.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+                if (data.success) {
+                    Alert.alert(
+                        "Thành công",
+                        "Cập nhật thông tin tài khoản thành công."
+                    );
+                    navigation.goBack();
+                } else {
+                    Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại.");
+                }
+            }
+        } catch (error) {
+            Alert.alert("Error", "An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // const handleCancel = () => {
     //     if (!isPressed) {
