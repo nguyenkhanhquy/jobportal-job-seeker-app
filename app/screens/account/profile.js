@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Text, TextInput, View, TouchableOpacity, Alert } from "react-native";
+import {
+    ActivityIndicator,
+    Text,
+    TextInput,
+    View,
+    TouchableOpacity,
+    Alert,
+} from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -17,16 +24,18 @@ const Profile = ({ route, navigation }) => {
 
     const [address, setAddress] = useState(route.params.user.address);
 
-    const [workExperience, setWorkExperience] = useState(route.params.user.workExperience);
+    const [workExperience, setWorkExperience] = useState(
+        route.params.user.workExperience
+    );
 
-    // const validateFullName = (value) => {
-    //     if (value.trim() === "") {
-    //         setFullNameError("Họ và tên không được để trống");
-    //     } else {
-    //         setFullNameError("");
-    //     }
-    //     setFullName(value);
-    // };
+    const validateFullName = (value) => {
+        if (value.trim() === "") {
+            setFullNameError("Họ và tên không được để trống");
+        } else {
+            setFullNameError("");
+        }
+        setFullName(value);
+    };
 
     // const handleSave = async () => {
     //     try {
@@ -121,7 +130,11 @@ const Profile = ({ route, navigation }) => {
                         onChangeText={validateFullName}
                     />
                 </View>
-                {fullNameError ? <Text className="text-red-500 text-sm mb-4">{fullNameError}</Text> : null}
+                {fullNameError ? (
+                    <Text className="text-red-500 text-sm mb-4">
+                        {fullNameError}
+                    </Text>
+                ) : null}
 
                 <Text className="text-base font-bold mb-2">Địa chỉ</Text>
                 <View className="bg-white rounded-lg px-4 py-3 mb-4">
@@ -134,7 +147,9 @@ const Profile = ({ route, navigation }) => {
                     />
                 </View>
 
-                <Text className="text-base font-bold mb-2">Kinh nghiệm làm việc</Text>
+                <Text className="text-base font-bold mb-2">
+                    Kinh nghiệm làm việc
+                </Text>
                 <View className="bg-white rounded-lg px-4 py-3 mb-4">
                     <TextInput
                         className="text-base text-gray-700"
@@ -152,10 +167,17 @@ const Profile = ({ route, navigation }) => {
                     className="border border-[#509b43] rounded-full py-3 px-4 w-[49%]"
                     onPress={handleCancel}
                 >
-                    <Text className="text-[#509b43] text-center font-bold text-base">Hủy</Text>
+                    <Text className="text-[#509b43] text-center font-bold text-base">
+                        Hủy
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="bg-[#509b43] rounded-full py-3 px-4 w-[49%]" onPress={handleSave}>
-                    <Text className="text-white text-center font-bold text-base">Lưu</Text>
+                <TouchableOpacity
+                    className="bg-[#509b43] rounded-full py-3 px-4 w-[49%]"
+                    onPress={handleSave}
+                >
+                    <Text className="text-white text-center font-bold text-base">
+                        Lưu
+                    </Text>
                 </TouchableOpacity>
             </View>
         </View>
