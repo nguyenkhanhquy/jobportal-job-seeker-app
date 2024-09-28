@@ -92,13 +92,13 @@ const ChangePassword = ({ route, navigation }) => {
         }
     };
 
-    // const handleCancel = () => {
-    //     if (!isPressed) {
-    //         setIsPressed(true);
-    //         navigation.goBack();
-    //         setTimeout(() => setIsPressed(false), 300); // Reset trạng thái sau 300 milliseconds
-    //     }
-    // };
+    const handleCancel = () => {
+        if (!isPressed) {
+            setIsPressed(true);
+            navigation.goBack();
+            setTimeout(() => setIsPressed(false), 300); // Reset trạng thái sau 300 milliseconds
+        }
+    };
 
     return (
         <View className="flex-1 bg-[#f1f4f9] justify-between">
