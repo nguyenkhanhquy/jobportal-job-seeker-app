@@ -57,6 +57,7 @@ const ResetPassword = ({ navigation, route }) => {
             Alert.alert("Lỗi", "Mật khẩu không trùng khớp");
             return;
         }
+
         try {
             setLoading(true);
             const data = await resetPassword(email, newPassword, otp);
