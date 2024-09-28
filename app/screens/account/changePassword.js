@@ -17,56 +17,56 @@ const ChangePassword = ({ route, navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-    // const validatePassword = (value) => {
-    //     if (value.trim() === "") {
-    //         setPasswordError("Vui lòng nhập mật khẩu hiện tại");
-    //     } else {
-    //         setPasswordError("");
-    //     }
-    //     setPassword(value);
-    // };
+    const validatePassword = (value) => {
+        if (value.trim() === "") {
+            setPasswordError("Vui lòng nhập mật khẩu hiện tại");
+        } else {
+            setPasswordError("");
+        }
+        setPassword(value);
+    };
 
-    // const validateNewPassword = (value) => {
-    //     if (value.trim() === "") {
-    //         setNewPasswordError("Vui lòng nhập mật khẩu mới");
-    //     } else {
-    //         setNewPasswordError("");
-    //     }
-    //     setNewPassword(value);
-    // };
+    const validateNewPassword = (value) => {
+        if (value.trim() === "") {
+            setNewPasswordError("Vui lòng nhập mật khẩu mới");
+        } else {
+            setNewPasswordError("");
+        }
+        setNewPassword(value);
+    };
 
-    // const validateConfirmPassword = (value) => {
-    //     if (value.trim() === "") {
-    //         setConfirmPasswordError("Vui lòng nhập lại mật khẩu mới");
-    //     } else if (newPassword !== value) {
-    //         setConfirmPasswordError("Nhập lại mật khẩu không trùng khớp");
-    //     } else {
-    //         setConfirmPasswordError("");
-    //     }
-    //     setConfirmPassword(value);
-    // };
+    const validateConfirmPassword = (value) => {
+        if (value.trim() === "") {
+            setConfirmPasswordError("Vui lòng nhập lại mật khẩu mới");
+        } else if (newPassword !== value) {
+            setConfirmPasswordError("Nhập lại mật khẩu không trùng khớp");
+        } else {
+            setConfirmPasswordError("");
+        }
+        setConfirmPassword(value);
+    };
 
-    // const validateInputs = () => {
-    //     let isValid = true;
+    const validateInputs = () => {
+        let isValid = true;
 
-    //     if (password.trim() === "") {
-    //         setPasswordError("Vui lòng nhập mật khẩu hiện tại");
-    //         isValid = false;
-    //     }
-    //     if (newPassword.trim() === "") {
-    //         setNewPasswordError("Vui lòng nhập mật khẩu mới");
-    //         isValid = false;
-    //     }
-    //     if (confirmPassword.trim() === "") {
-    //         setConfirmPasswordError("Vui lòng nhập lại mật khẩu mới");
-    //         isValid = false;
-    //     } else if (newPassword !== confirmPassword) {
-    //         setConfirmPasswordError("Nhập lại mật khẩu không trùng khớp");
-    //         isValid = false;
-    //     }
+        if (password.trim() === "") {
+            setPasswordError("Vui lòng nhập mật khẩu hiện tại");
+            isValid = false;
+        }
+        if (newPassword.trim() === "") {
+            setNewPasswordError("Vui lòng nhập mật khẩu mới");
+            isValid = false;
+        }
+        if (confirmPassword.trim() === "") {
+            setConfirmPasswordError("Vui lòng nhập lại mật khẩu mới");
+            isValid = false;
+        } else if (newPassword !== confirmPassword) {
+            setConfirmPasswordError("Nhập lại mật khẩu không trùng khớp");
+            isValid = false;
+        }
 
-    //     return isValid;
-    // };
+        return isValid;
+    };
 
     // const handleSave = async () => {
     //     if (!validateInputs()) {
