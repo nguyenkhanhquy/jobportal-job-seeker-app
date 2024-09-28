@@ -14,17 +14,17 @@ const ActivateAccount = ({ route, navigation }) => {
 
     const { email } = route.params;
 
-    // const showToast = (type, text1, text2) => {
-    //     Toast.show({
-    //         type: type,
-    //         text1: text1,
-    //         text2: text2,
-    //         position: "top",
-    //         visibilityTime: 3000,
-    //         text1Style: { fontSize: 16, fontWeight: "bold" },
-    //         text2Style: { fontSize: 12 },
-    //     });
-    // };
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "top",
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     // const handleSendOTP = async () => {
     //     try {
