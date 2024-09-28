@@ -68,29 +68,29 @@ const ChangePassword = ({ route, navigation }) => {
         return isValid;
     };
 
-    // const handleSave = async () => {
-    //     if (!validateInputs()) {
-    //         return;
-    //     }
+    const handleSave = async () => {
+        if (!validateInputs()) {
+            return;
+        }
 
-    //     try {
-    //         setLoading(true);
-    //         const token = await getToken();
-    //         if (token) {
-    //             const data = await updatePassword(token, password, newPassword);
-    //             if (data.success) {
-    //                 Alert.alert("Thành công", "Đổi mật khẩu thành công");
-    //                 navigation.goBack();
-    //             } else {
-    //                 Alert.alert("Lỗi", data.message);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+        try {
+            setLoading(true);
+            const token = await getToken();
+            if (token) {
+                const data = await updatePassword(token, password, newPassword);
+                if (data.success) {
+                    Alert.alert("Thành công", "Đổi mật khẩu thành công");
+                    navigation.goBack();
+                } else {
+                    Alert.alert("Lỗi", data.message);
+                }
+            }
+        } catch (error) {
+            Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // const handleCancel = () => {
     //     if (!isPressed) {
