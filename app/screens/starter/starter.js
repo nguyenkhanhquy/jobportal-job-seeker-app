@@ -1,13 +1,12 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, ImageBackground } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 const Starter = ({ navigation }) => {
     return (
-        <View className="flex-1 bg-gray-100 p-4 justify-between">
+        <ImageBackground source={require("../../assets/img/starter.png")} className="flex-1 justify-between p-4">
             <StatusBar style="auto" />
 
-            {/* Buttons container */}
             <View className="flex-row justify-between w-full mt-auto">
                 <TouchableOpacity
                     className="bg-green-600 rounded-full py-3 px-6 mx-2 flex-1"
@@ -24,11 +23,10 @@ const Starter = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* "Trải nghiệm không cần đăng nhập" */}
             <TouchableOpacity onPress={() => navigation.navigate("Home")} className="mt-4 mb-5">
                 <Text className="text-sm font-bold text-green-600 text-center">Trải nghiệm không cần đăng nhập</Text>
             </TouchableOpacity>
-        </View>
+        </ImageBackground>
     );
 };
 
