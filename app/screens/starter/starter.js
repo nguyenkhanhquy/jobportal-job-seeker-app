@@ -1,61 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 const Starter = ({ navigation }) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>
-                Chào mừng đến với <Text style={[styles.welcome, styles.title]}> Job Portal!</Text>
-            </Text>
+        <View className="flex-1 bg-gray-100 p-4 justify-between">
+            {/* Buttons container */}
+            <View className="flex-row justify-between w-full mt-auto">
+                <TouchableOpacity
+                    className="bg-green-600 rounded-full py-3 px-6 mx-2 flex-1"
+                    onPress={() => navigation.navigate("Auth", { screen: "Login" })}
+                >
+                    <Text className="text-white text-lg font-bold text-center">Đăng nhập</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Auth", { screen: "Login" })}>
-                <Text style={styles.buttonText}>Đăng nhập</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    className="bg-gray-100 border border-green-600 rounded-full py-3 px-6 mx-2 flex-1"
+                    onPress={() => navigation.navigate("Auth", { screen: "Register" })}
+                >
+                    <Text className="text-green-600 text-lg font-bold text-center">Đăng ký</Text>
+                </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-                style={[styles.button, styles.registerButton]}
-                onPress={() => navigation.navigate("Auth", { screen: "Register" })}
-            >
-                <Text style={styles.buttonText}>Đăng ký</Text>
+            {/* "Trải nghiệm không cần đăng nhập" */}
+            <TouchableOpacity onPress={() => navigation.navigate("Home")} className="mt-4 mb-5">
+                <Text className="text-sm font-bold text-green-600 text-center">Trải nghiệm không cần đăng nhập</Text>
             </TouchableOpacity>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        backgroundColor: "#f0f0f0",
-    },
-    welcome: {
-        fontSize: 24,
-        marginBottom: 40,
-        textAlign: "center",
-        fontWeight: "bold",
-    },
-    title: {
-        color: "#6dcf5b",
-    },
-    button: {
-        backgroundColor: "#6dcf5b",
-        borderRadius: 50,
-        paddingVertical: 15,
-        paddingHorizontal: 25,
-        marginVertical: 10,
-        width: "80%",
-        alignItems: "center",
-    },
-    buttonText: {
-        color: "#ffffff",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    registerButton: {
-        backgroundColor: "#509b43",
-    },
-});
 
 export default Starter;
