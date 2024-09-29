@@ -116,7 +116,7 @@ const AccountTab = ({ navigation }) => {
                                 if (data.success) {
                                     deleteToken();
                                     setUserInfo(null);
-                                    navigation.navigate("Login");
+                                    navigation.navigate("Auth", { screen: "Login" });
                                     Alert.alert("Success", data.message);
                                 }
                             }
@@ -241,7 +241,7 @@ const AccountTab = ({ navigation }) => {
                             <TouchableOpacity
                                 className="bg-[#509b43] p-3 rounded-lg justify-center items-center"
                                 onPress={() => {
-                                    navigation.navigate("Login");
+                                    navigation.navigate("Auth", { screen: "Login" });
                                 }}
                             >
                                 <Text className="text-lg font-medium text-white">Đăng nhập</Text>

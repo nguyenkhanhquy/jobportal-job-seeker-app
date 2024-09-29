@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 import { introspect } from "../../services/authAPIService";
 import { getToken, deleteToken } from "../../utils/authStorage";
@@ -33,6 +34,8 @@ const Intro = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <StatusBar style="auto" />
+
             <Image source={logo} style={styles.image} />
         </View>
     );

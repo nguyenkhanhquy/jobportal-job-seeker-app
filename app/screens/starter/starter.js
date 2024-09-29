@@ -1,9 +1,12 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const Starter = ({ navigation }) => {
     return (
         <View className="flex-1 bg-gray-100 p-4 justify-between">
+            <StatusBar style="auto" />
+
             {/* Buttons container */}
             <View className="flex-row justify-between w-full mt-auto">
                 <TouchableOpacity
