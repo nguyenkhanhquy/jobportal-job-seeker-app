@@ -7,6 +7,7 @@ import Intro from "../../screens/intro/intro";
 import Starter from "../../screens/starter/starter";
 import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";
+import CVNavigator from "./CVNavigator";
 
 import ActivateAccount from "../../screens/account/activateAccount";
 import Profile from "../../screens/account/profile";
@@ -28,6 +29,7 @@ const AppNavigator = () => {
                 <Stack.Screen name="Starter" component={Starter} />
                 <Stack.Screen name="Auth" component={AuthNavigator} />
                 <Stack.Screen name="Home" component={MainTabNavigator} />
+                <Stack.Screen name="CV" component={CVNavigator} />
 
                 <Stack.Screen name="ActivateAccount" component={ActivateAccount} />
                 <Stack.Screen
