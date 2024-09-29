@@ -40,7 +40,18 @@ const MainTabNavigator = () => {
             })}
         >
             <Tab.Screen name="HomeTab" component={HomeTab} options={{ tabBarLabel: "Trang chủ" }} />
-            <Tab.Screen name="CV_ProfileTab" component={CV_ProfileTab} options={{ tabBarLabel: "CV & Profile" }} />
+            <Tab.Screen
+                name="CV_ProfileTab"
+                component={CV_ProfileTab}
+                options={{
+                    tabBarLabel: "CV & Profile",
+                    headerShown: true,
+                    headerTitle: "Quản lý CV",
+                    headerTitleAlign: "center",
+                    headerStyle: { backgroundColor: "#ffffff", borderColor: "#f0f0f0", borderBottomWidth: 1 },
+                    headerTintColor: "#000",
+                }}
+            />
             <Tab.Screen name="JobConnectTab" component={JobConnectTab} options={{ tabBarLabel: "Job Connect" }} />
             <Tab.Screen name="NotificationScreen" component={NotificationTab} options={{ tabBarLabel: "Thông Báo" }} />
             <Tab.Screen name="AccountTab" component={AccountTab} options={{ tabBarLabel: "Tài Khoản" }} />
