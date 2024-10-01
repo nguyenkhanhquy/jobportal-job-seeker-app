@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from "react-native";
 
 const Carousel = ({ data, renderItem, horizontal = true }) => {
     return (
-        <View style={styles.carouselContainer}>
+        <View style={horizontal ? styles.horizontalContainer : styles.verticalContainer}>
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -20,7 +20,11 @@ const Carousel = ({ data, renderItem, horizontal = true }) => {
 };
 
 const styles = StyleSheet.create({
-    carouselContainer: {
+    horizontalContainer: {
+        paddingHorizontal: 20,
+    },
+    verticalContainer: {
+        flex: 1,
         paddingHorizontal: 20,
     },
 });
