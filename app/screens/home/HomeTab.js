@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import Carousel from "../../components/Carousel";
 import JobCard from "../../components/JobCard";
+import SearchBar from "../../components/SearchBar";
 
 import { getListJobs } from "../../services/jobAPIService";
 
@@ -39,25 +40,51 @@ const Home = ({ navigation }) => {
     );
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <StatusBar style="auto" />
+            <SearchBar />
+            <ScrollView style={styles.scrollView}>
+                {/* Phần "Việc làm tốt nhất" */}
+                <Text className="text-lg font-bold text-gray-800 mb-2">Việc làm tốt nhất</Text>
+                <Carousel data={listJobs} renderItem={renderJobItem} />
 
-            <View className="flex-row justify-between items-center px-4 mb-2">
-                <Text className="text-lg font-bold text-gray-800">Việc làm tốt nhất</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("JobList")}>
-                    <Text className="text-green-600 font-bold text-base">Xem tất cả</Text>
-                </TouchableOpacity>
-            </View>
+                {/* Phần "Việc làm hấp dẫn" */}
+                <View className="flex-row justify-between items-center mb-2">
+                    <Text className="text-lg font-bold text-gray-800">Việc làm hấp dẫn</Text>
+                    <TouchableOpacity>
+                        <Text className="text-green-600 font-bold text-base">Xem tất cả</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <Carousel data={listJobs} renderItem={renderJobItem} />
-        </ScrollView>
+                {/* FlatList chỉ cho phần "Việc làm hấp dẫn" */}
+                <View style={styles.listContainer}>
+                    <FlatList
+                        data={listJobs}
+                        renderItem={renderJobItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        nestedScrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </View>
+
+                {/* Các Text để kiểm tra cuộn */}
+                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
+                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
+                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
+            </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+    },
+    scrollView: {
+        paddingHorizontal: 20,
+    },
+    listContainer: {
+        height: 400,
     },
 });
 
