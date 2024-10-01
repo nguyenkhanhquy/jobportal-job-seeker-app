@@ -40,45 +40,23 @@ const Home = ({ navigation }) => {
     );
 
     return (
-        <View style={styles.container}>
+        <View className="flex-1 bg-white">
             <StatusBar style="auto" />
 
             <SearchBar />
 
-            <Text style={styles.sectionTitle} className="text-lg font-bold text-gray-800 mb-2">
-                Việc làm tốt nhất
-            </Text>
+            <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm tốt nhất</Text>
             <Carousel data={listJobs} renderItem={renderJobItem} />
 
-            <View style={styles.listContainer}>
-                <View className="flex-row justify-between items-center mb-2">
-                    <Text style={styles.sectionTitle} className="text-lg font-bold text-gray-800">
-                        Việc làm mới nhất
-                    </Text>
-                    <TouchableOpacity>
-                        <Text className="text-green-600 font-bold text-base">Xem tất cả</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Carousel data={listJobs} renderItem={renderJobItem} horizontal={false} />
+            <View className="flex-row justify-between items-center mb-2">
+                <Text className="text-lg font-bold text-gray-800 ml-5">Việc làm mới nhất</Text>
+                <TouchableOpacity>
+                    <Text className="text-green-600 font-bold text-base mr-5">Xem tất cả</Text>
+                </TouchableOpacity>
             </View>
+            <Carousel data={listJobs} renderItem={renderJobItem} horizontal={false} />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#ffffff",
-    },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        paddingHorizontal: 20,
-    },
-    listContainer: {
-        marginBottom: 20,
-    },
-});
 
 export default Home;
