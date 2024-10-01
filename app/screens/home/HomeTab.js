@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, ScrollView, Alert, View, Text, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Alert, View, Text, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import Carousel from "../../components/Carousel";
@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
     const loadData = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await getListJobs();
+            const data = await getListJobs(1, 10);
             if (data.success) {
                 setListJobs(data.result);
             } else {
@@ -42,36 +42,26 @@ const Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
-            <SearchBar />
-            <ScrollView style={styles.scrollView}>
-                {/* Phần "Việc làm tốt nhất" */}
-                <Text className="text-lg font-bold text-gray-800 mb-2">Việc làm tốt nhất</Text>
-                <Carousel data={listJobs} renderItem={renderJobItem} />
 
-                {/* Phần "Việc làm hấp dẫn" */}
+            <SearchBar />
+
+            <Text style={styles.sectionTitle} className="text-lg font-bold text-gray-800 mb-2">
+                Việc làm tốt nhất
+            </Text>
+            <Carousel data={listJobs} renderItem={renderJobItem} />
+
+            <View style={styles.listContainer}>
                 <View className="flex-row justify-between items-center mb-2">
-                    <Text className="text-lg font-bold text-gray-800">Việc làm hấp dẫn</Text>
+                    <Text style={styles.sectionTitle} className="text-lg font-bold text-gray-800">
+                        Việc làm mới nhất
+                    </Text>
                     <TouchableOpacity>
                         <Text className="text-green-600 font-bold text-base">Xem tất cả</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* FlatList chỉ cho phần "Việc làm hấp dẫn" */}
-                <View style={styles.listContainer}>
-                    <FlatList
-                        data={listJobs}
-                        renderItem={renderJobItem}
-                        keyExtractor={(item) => item.id.toString()}
-                        nestedScrollEnabled={true}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
-
-                {/* Các Text để kiểm tra cuộn */}
-                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
-                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
-                <Text className="text-lg font-bold text-gray-800 mb-2">Abc Abc</Text>
-            </ScrollView>
+                <Carousel data={listJobs} renderItem={renderJobItem} horizontal={false} />
+            </View>
         </View>
     );
 };
@@ -79,12 +69,15 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#ffffff",
     },
-    scrollView: {
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
         paddingHorizontal: 20,
     },
     listContainer: {
-        height: 400,
+        marginBottom: 20,
     },
 });
 
