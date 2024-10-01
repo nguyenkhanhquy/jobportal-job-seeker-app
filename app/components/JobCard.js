@@ -10,9 +10,7 @@ const JobCard = ({ job, onPress, onSave }) => {
         <TouchableOpacity
             onPress={onPress}
             className="bg-white p-4 rounded-lg mb-2 mr-4 shadow-sm border border-green-500 flex-row"
-            style={{
-                width: screenWidth * 0.89,
-            }}
+            style={{ width: screenWidth - 40 }}
         >
             <Image source={{ uri: job.logo }} className="w-16 h-16 rounded-lg mr-4" />
             <View className="flex-1">
