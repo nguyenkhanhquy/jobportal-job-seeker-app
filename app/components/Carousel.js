@@ -11,9 +11,9 @@ const Carousel = ({ data, renderItem, horizontal = true }) => {
                 horizontal={horizontal}
                 showsHorizontalScrollIndicator={horizontal}
                 showsVerticalScrollIndicator={!horizontal}
-                snapToInterval={350}
-                snapToAlignment="start"
-                decelerationRate="fast"
+                // snapToInterval={360}
+                // snapToAlignment="start"
+                // decelerationRate="fast"
             />
         </View>
     );
@@ -21,7 +21,7 @@ const Carousel = ({ data, renderItem, horizontal = true }) => {
 
 const styles = StyleSheet.create({
     carouselContainer: {
-        // paddingHorizontal: 12,
+        paddingHorizontal: 20,
     },
 });
 
