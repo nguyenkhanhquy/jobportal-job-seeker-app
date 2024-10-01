@@ -6,6 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import Carousel from "../../components/Carousel";
 import JobCard from "../../components/JobCard";
 import SearchBar from "../../components/SearchBar";
+import LoginPrompt from "../../components/LoginPrompt";
 
 import { getListJobs } from "../../services/jobAPIService";
 
@@ -44,6 +45,8 @@ const Home = ({ navigation }) => {
             <StatusBar style="auto" />
 
             <SearchBar />
+
+            <LoginPrompt />
 
             <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm tốt nhất</Text>
             <Carousel data={listJobs} renderItem={renderJobItem} />
