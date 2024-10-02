@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Alert, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -9,14 +9,40 @@ import SearchBar from "../../components/SearchBar";
 import LoginPrompt from "../../components/LoginPrompt";
 
 import { getListJobs } from "../../services/jobAPIService";
+import { getToken } from "../../utils/authStorage";
 
 const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(null);
     const [listBestJobs, setListBestJobs] = useState([]);
     const [listJobs, setListJobs] = useState([]);
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
+
+    // Lấy token một lần khi component được render
+    useEffect(() => {
+        const fetchToken = async () => {
+            const savedToken = await getToken();
+            setToken(savedToken);
+        };
+
+        const fetchBestJobs = async () => {
+            try {
+                const data = await getListJobs(1, 10);
+                if (data.success) {
+                    setListBestJobs(data.result);
+                } else {
+                    Alert.alert("Lỗi", data.message);
+                }
+            } catch (error) {
+                Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
+            }
+        };
+
+        fetchToken();
+        fetchBestJobs();
+    }, []);
 
     const loadData = useCallback(async (newPage = 1) => {
         try {
@@ -82,10 +108,10 @@ const Home = ({ navigation }) => {
 
             <SearchBar />
 
-            <LoginPrompt />
+            {token === null && <LoginPrompt />}
 
             <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm tốt nhất</Text>
-            <Carousel data={listJobs} renderItem={renderJobItem} />
+            <Carousel data={listBestJobs} renderItem={renderJobItem} />
 
             <View className="flex-row justify-between items-center mb-2">
                 <Text className="text-lg font-bold text-gray-800 ml-5">Việc làm mới nhất</Text>
