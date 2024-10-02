@@ -17,6 +17,7 @@ export const JOBS_API = {
     LIST: "/jobs",
     DETAILS: "/jobs/:id",
     APPLY: "/jobs/:id/apply",
+    SEARCH: "/jobs/search",
 };
 
 export const JOB_SEEKER_API = {

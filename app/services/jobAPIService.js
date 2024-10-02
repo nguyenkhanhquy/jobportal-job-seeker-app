@@ -9,3 +9,13 @@ export const getListJobs = async (page, size) => {
         },
     });
 };
+
+export const getSearchJobs = async (query, page, size) => {
+    return getRequest(JOBS_API.SEARCH, {
+        params: {
+            query: query ?? null,
+            page: page ?? 1,
+            size: size ?? 5,
+        },
+    });
+};
