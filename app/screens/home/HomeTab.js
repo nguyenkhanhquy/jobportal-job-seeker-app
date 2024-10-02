@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, Alert, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import { Alert, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import Carousel from "../../components/Carousel";
@@ -11,8 +11,9 @@ import LoginPrompt from "../../components/LoginPrompt";
 import { getListJobs } from "../../services/jobAPIService";
 
 const Home = ({ navigation }) => {
-    const [listJobs, setListJobs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [listBestJobs, setListBestJobs] = useState([]);
+    const [listJobs, setListJobs] = useState([]);
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
@@ -72,7 +73,7 @@ const Home = ({ navigation }) => {
 
     const renderFooter = () => {
         if (!isFetchingMore) return null;
-        return <ActivityIndicator size="large" color="#0000ff" />;
+        return <ActivityIndicator size="large" color="#16a34a" />;
     };
 
     return (

@@ -2,15 +2,14 @@ import React from "react";
 import { TouchableOpacity, View, Image, Text, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-// Get screen width for responsive design
 const screenWidth = Dimensions.get("window").width;
 
 const JobCard = ({ job, onPress, onSave }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
-            className="bg-white p-4 rounded-lg mb-2 mr-4 shadow-sm border border-green-500 flex-row"
-            style={{ width: screenWidth - 40 }}
+            className="bg-white p-4 rounded-lg mb-2 shadow-sm border border-green-500 flex-row"
+            style={{ width: screenWidth - 40, marginEnd: 20 }}
         >
             <Image source={{ uri: job.logo }} className="w-16 h-16 rounded-lg mr-4" />
             <View className="flex-1">

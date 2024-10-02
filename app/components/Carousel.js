@@ -1,5 +1,8 @@
 import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, Dimensions } from "react-native";
+
+const screenWidth = Dimensions.get("window").width;
+const cardWidth = screenWidth - 20;
 
 const Carousel = ({ data, renderItem, horizontal = true }) => {
     return (
@@ -11,9 +14,9 @@ const Carousel = ({ data, renderItem, horizontal = true }) => {
                 horizontal={horizontal}
                 showsHorizontalScrollIndicator={horizontal}
                 showsVerticalScrollIndicator={!horizontal}
-                // snapToInterval={360}
-                // snapToAlignment="start"
-                // decelerationRate="fast"
+                snapToInterval={cardWidth}
+                snapToAlignment="start"
+                decelerationRate="fast"
             />
         </View>
     );
