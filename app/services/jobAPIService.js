@@ -19,3 +19,14 @@ export const getSearchJobs = async (query, page, size) => {
         },
     });
 };
+
+export const getFilterJobs = async (tilte, address, page, size) => {
+    return getRequest(JOBS_API.FILTER, {
+        params: {
+            tilte: tilte ?? null,
+            address: address ?? null,
+            page: page ?? 1,
+            size: size ?? 5,
+        },
+    });
+};
