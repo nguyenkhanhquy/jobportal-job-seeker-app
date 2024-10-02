@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function JobDetail({ route, navigation }) {
@@ -17,6 +18,8 @@ export default function JobDetail({ route, navigation }) {
 
     return (
         <View className="flex-1 bg-gray-100">
+            <StatusBar style="auto" />
+
             {/* Back Button */}
             <TouchableOpacity className="absolute top-8 left-4 bg-green-600 p-3 rounded-full z-10" onPress={handleBack}>
                 <Ionicons name="arrow-back" size={24} color="white" />
