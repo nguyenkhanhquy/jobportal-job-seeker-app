@@ -23,7 +23,14 @@ const Starter = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Home")} className="mt-4 mb-5">
+            <TouchableOpacity
+                onPress={() =>
+                    navigation.navigate("Home", {
+                        screen: "HomeTab",
+                    })
+                }
+                className="mt-4 mb-5"
+            >
                 <Text className="text-sm font-bold text-green-600 text-center">Trải nghiệm không cần đăng nhập</Text>
             </TouchableOpacity>
         </ImageBackground>

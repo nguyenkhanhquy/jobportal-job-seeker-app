@@ -145,7 +145,7 @@ const AccountTab = ({ navigation }) => {
         <View className="flex-1 bg-gray-100">
             <StatusBar style="auto" />
             {/* Background Section */}
-            <View className="bg-[#5fa75f] h-36 w-full absolute top-0 left-0 right-0 z-[-1]" />
+            <View className="bg-green-600 h-36 w-full absolute top-0 left-0 right-0 z-[-1]" />
 
             {/* Profile Section */}
             {userInfo ? (
@@ -157,10 +157,10 @@ const AccountTab = ({ navigation }) => {
                                     source={{
                                         uri: userInfo.avatar,
                                     }}
-                                    className="w-24 h-24 rounded-full border-2 border-[#6dcf5b]"
+                                    className="w-24 h-24 rounded-full border-2 border-green-600"
                                 />
                             ) : (
-                                <View className="w-24 h-24 rounded-full border-2 border-[#509b43] justify-center items-center">
+                                <View className="w-24 h-24 rounded-full border-2 border-green-600 justify-center items-center">
                                     <Ionicons name="person-outline" size={48} color="#509b43" />
                                 </View>
                             )}
@@ -232,7 +232,7 @@ const AccountTab = ({ navigation }) => {
                 <>
                     <View className="flex-row bg-white rounded-lg p-5 mx-5 mt-20" style={styles.shadowStyle}>
                         <View className="relative mr-5">
-                            <View className="w-24 h-24 rounded-full border-2 border-[#509b43] justify-center items-center">
+                            <View className="w-24 h-24 rounded-full border-2 border-green-600 justify-center items-center">
                                 <Ionicons name="person-outline" size={48} color="#509b43" />
                             </View>
                         </View>

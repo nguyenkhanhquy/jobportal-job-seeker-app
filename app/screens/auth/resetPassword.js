@@ -32,6 +32,7 @@ const ResetPassword = ({ navigation, route }) => {
 
     const handleSendOtp = async () => {
         try {
+            setOtp("");
             setLoading(true);
             const data = await sendOtp(email);
 
@@ -109,7 +110,7 @@ const ResetPassword = ({ navigation, route }) => {
                             elevation: 5, // Hiệu ứng đổ bóng cho Android
                         }}
                     >
-                        <ActivityIndicator size="large" color="#6dcf5b" />
+                        <ActivityIndicator size="large" color="#16a34a" />
                     </View>
                 </View>
             )}
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     resendButton: {
-        backgroundColor: "#509b43",
+        backgroundColor: "#16a34a",
         borderRadius: 5,
         paddingVertical: 8,
         paddingHorizontal: 12,
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     button: {
-        backgroundColor: "#509b43",
+        backgroundColor: "#16a34a",
         width: "100%",
         borderRadius: 5,
         paddingVertical: 12,
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
     },
     bold: {
         fontWeight: "bold",
-        color: "#509b43",
+        color: "#16a34a",
     },
     noteText: {
         color: "#a0a0a0",
