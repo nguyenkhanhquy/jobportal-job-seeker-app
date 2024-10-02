@@ -102,12 +102,17 @@ const Home = ({ navigation }) => {
         return <ActivityIndicator size="large" color="#16a34a" />;
     };
 
+    const handleSearchSubmit = (query) => {
+        // Bạn có thể xử lý query ở đây nếu cần trước khi điều hướng
+        navigation.navigate("JobList", { searchQuery: query }); // Điều hướng đến JobList và truyền query
+    };
+
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
 
             <View className="mt-10" />
-            <SearchBar />
+            <SearchBar onSubmit={handleSearchSubmit} />
 
             {token === null && <LoginPrompt />}
 

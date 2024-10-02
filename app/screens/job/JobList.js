@@ -10,7 +10,9 @@ import JobCard from "../../components/JobCard";
 import { getSearchJobs, getFilterJobs } from "../../services/jobAPIService";
 import { getToken } from "../../utils/authStorage";
 
-export default function JobList({ navigation }) {
+export default function JobList({ route, navigation }) {
+    const searchQuery = route.params?.searchQuery;
+
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [listJobs, setListJobs] = useState([]);
@@ -18,7 +20,7 @@ export default function JobList({ navigation }) {
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
-    const [query, setQuery] = useState(null); // State để lưu truy vấn tìm kiếm
+    const [query, setQuery] = useState(searchQuery); // State để lưu truy vấn tìm kiếm
 
     // useEffect(() => {
     //     const fetchToken = async () => {
@@ -96,7 +98,7 @@ export default function JobList({ navigation }) {
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
             <LocationPicker selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
             <View className="flex-1 px-5">
                 <FlatList
