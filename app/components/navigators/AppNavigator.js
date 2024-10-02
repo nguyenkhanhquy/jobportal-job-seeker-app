@@ -12,6 +12,7 @@ import CVNavigator from "./CVNavigator";
 import ActivateAccount from "../../screens/account/activateAccount";
 import Profile from "../../screens/account/profile";
 import ChangePassword from "../../screens/account/changePassword";
+import JobDetail from "../../screens/job/JobDetail";
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ const AppNavigator = () => {
                     component={ChangePassword}
                     options={{ headerShown: true, headerTitle: "Đổi mật khẩu", headerTitleAlign: "center" }}
                 />
+                <Stack.Screen name="JobDetail" component={JobDetail} />
             </Stack.Navigator>
             <Toast />
         </NavigationContainer>

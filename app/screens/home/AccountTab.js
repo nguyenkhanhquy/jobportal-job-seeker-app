@@ -239,7 +239,7 @@ const AccountTab = ({ navigation }) => {
                         <View className="flex-1 justify-center">
                             <Text className="text-lg font-bold text-gray-800 mb-3 text-center">Vui lòng đăng nhập</Text>
                             <TouchableOpacity
-                                className="bg-[#509b43] p-3 rounded-lg justify-center items-center"
+                                className="bg-green-600 p-3 rounded-lg justify-center items-center"
                                 onPress={() => {
                                     navigation.navigate("Auth", { screen: "Login" });
                                 }}
