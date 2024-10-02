@@ -110,7 +110,7 @@ const Home = ({ navigation }) => {
 
             {token === null && <LoginPrompt />}
 
-            <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm tốt nhất</Text>
+            <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm được quan tâm nhất</Text>
             <Carousel data={listBestJobs} renderItem={renderJobItem} />
 
             <View className="flex-row justify-between items-center mb-2">
