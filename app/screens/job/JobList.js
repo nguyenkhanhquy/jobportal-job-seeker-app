@@ -7,33 +7,33 @@ import LocationPicker from "../../components/LocationPicker";
 import SearchBar from "../../components/SearchBar";
 import JobCard from "../../components/JobCard";
 
-import { getSearchJobs } from "../../services/jobAPIService";
+import { getSearchJobs, getFilterJobs } from "../../services/jobAPIService";
 import { getToken } from "../../utils/authStorage";
 
 export default function JobList({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [listJobs, setListJobs] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState("all");
+    const [selectedLocation, setSelectedLocation] = useState(null);
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
-    const [query, setQuery] = useState(""); // State để lưu truy vấn tìm kiếm
+    const [query, setQuery] = useState(null); // State để lưu truy vấn tìm kiếm
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const savedToken = await getToken();
-            setToken(savedToken);
-        };
+    // useEffect(() => {
+    //     const fetchToken = async () => {
+    //         const savedToken = await getToken();
+    //         setToken(savedToken);
+    //     };
 
-        fetchToken();
-    }, []);
+    //     fetchToken();
+    // }, []);
 
     const loadData = useCallback(
         async (newPage = 1) => {
             try {
                 if (newPage === 1) setLoading(true);
-                const data = await getSearchJobs(query, newPage, 5); // Tải công việc theo từ khóa tìm kiếm
+                const data = await getFilterJobs(query, selectedLocation, newPage, 5); // Tải công việc theo từ khóa tìm kiếm
                 if (data.success) {
                     if (newPage > 1) {
                         setListJobs((prevJobs) => [...prevJobs, ...data.result]);
@@ -54,7 +54,7 @@ export default function JobList({ navigation }) {
                 setIsFetchingMore(false); // Dừng tải thêm dữ liệu
             }
         },
-        [query] // Thêm truy vấn vào dependencies
+        [query, selectedLocation]
     );
 
     useFocusEffect(
