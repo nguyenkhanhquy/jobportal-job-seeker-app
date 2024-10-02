@@ -14,19 +14,21 @@ import { getToken } from "../../utils/authStorage";
 const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
+
     const [listBestJobs, setListBestJobs] = useState([]);
     const [listJobs, setListJobs] = useState([]);
+
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
 
+    const fetchToken = async () => {
+        const savedToken = await getToken();
+        setToken(savedToken);
+    };
+
     // Lấy token một lần khi component được render
     useEffect(() => {
-        const fetchToken = async () => {
-            const savedToken = await getToken();
-            setToken(savedToken);
-        };
-
         const fetchBestJobs = async () => {
             try {
                 const data = await getListJobs(1, 10);
@@ -40,7 +42,6 @@ const Home = ({ navigation }) => {
             }
         };
 
-        fetchToken();
         fetchBestJobs();
     }, []);
 
@@ -78,6 +79,8 @@ const Home = ({ navigation }) => {
             setPage(1);
             setHasMoreData(true);
             loadData(1); // Đặt lại trang về 1
+
+            fetchToken();
         }, [loadData])
     );
 
@@ -103,13 +106,47 @@ const Home = ({ navigation }) => {
     };
 
     const handleSearchSubmit = (query) => {
-        // Bạn có thể xử lý query ở đây nếu cần trước khi điều hướng
-        navigation.navigate("JobList", { searchQuery: query }); // Điều hướng đến JobList và truyền query
+        navigation.navigate("JobList", { searchQuery: query });
     };
 
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
+
+            {loading && (
+                <View
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0, 0, 0, 0.1)", // Làm mờ phần nền xung quanh một chút
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 10,
+                    }}
+                >
+                    {/* Hình vuông chứa ActivityIndicator */}
+                    <View
+                        style={{
+                            width: 68, // Kích thước của hình vuông
+                            height: 68,
+                            backgroundColor: "#fff", // Màu nền trắng cho hình vuông
+                            borderRadius: 10, // Bo góc cho hình vuông
+                            justifyContent: "center",
+                            alignItems: "center",
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 2,
+                            elevation: 5, // Hiệu ứng đổ bóng cho Android
+                        }}
+                    >
+                        <ActivityIndicator size="large" color="#16a34a" />
+                    </View>
+                </View>
+            )}
 
             <View className="mt-10" />
             <SearchBar onSubmit={handleSearchSubmit} />

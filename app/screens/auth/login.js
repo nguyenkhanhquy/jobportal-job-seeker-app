@@ -153,7 +153,7 @@ const Login = ({ navigation }) => {
 
             {/* Login Button */}
             <TouchableOpacity
-                className={"w-full rounded-full py-3 mb-10 items-center bg-green-600"}
+                className={"w-full rounded-full py-3 mb-32 items-center bg-green-600"}
                 onPress={handleLogin}
             >
                 <Text className="text-white text-lg">Đăng nhập</Text>
