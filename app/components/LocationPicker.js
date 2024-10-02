@@ -12,7 +12,7 @@ const LocationPicker = ({ selectedLocation, setSelectedLocation }) => {
                     className="h-12 w-full bg-gray-100 px-2 text-gray-800"
                     dropdownIconColor="#00A86B"
                 >
-                    <Picker.Item label="Tất cả khu vực" value="all" />
+                    <Picker.Item label="Tất cả khu vực" value={null} />
                     <Picker.Item label="Hà Nội" value="Hà Nội" />
                     <Picker.Item label="Hồ Chí Minh" value="Hồ Chí Minh" />
                     <Picker.Item label="Đà Nẵng" value="Đà Nẵng" />
