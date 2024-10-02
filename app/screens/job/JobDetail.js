@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function JobDetail({ route, navigation }) {
+const JobDetail = ({ route, navigation }) => {
     const [isPressed, setIsPressed] = useState(false);
 
     const { job } = route.params;
@@ -110,4 +110,6 @@ export default function JobDetail({ route, navigation }) {
             </View>
         </View>
     );
-}
+};
+
+export default JobDetail;

@@ -13,6 +13,7 @@ import ActivateAccount from "../../screens/account/activateAccount";
 import Profile from "../../screens/account/profile";
 import ChangePassword from "../../screens/account/changePassword";
 import JobDetail from "../../screens/job/JobDetail";
+import JobList from "../../screens/job/JobList";
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,11 @@ const AppNavigator = () => {
                     options={{ headerShown: true, headerTitle: "Đổi mật khẩu", headerTitleAlign: "center" }}
                 />
                 <Stack.Screen name="JobDetail" component={JobDetail} />
+                <Stack.Screen
+                    name="JobList"
+                    component={JobList}
+                    options={{ headerShown: true, headerTitle: "Danh sách việc làm" }}
+                />
             </Stack.Navigator>
             <Toast />
         </NavigationContainer>

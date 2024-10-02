@@ -105,6 +105,10 @@ const Home = ({ navigation }) => {
         return <ActivityIndicator size="large" color="#16a34a" />;
     };
 
+    const handleSearchSubmit = (query) => {
+        navigation.navigate("JobList", { searchQuery: query });
+    };
+
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
@@ -144,7 +148,8 @@ const Home = ({ navigation }) => {
                 </View>
             )}
 
-            <SearchBar />
+            <View className="mt-10" />
+            <SearchBar onSubmit={handleSearchSubmit} />
 
             {token === null && <LoginPrompt />}
 
@@ -153,7 +158,7 @@ const Home = ({ navigation }) => {
 
             <View className="flex-row justify-between items-center mb-2">
                 <Text className="text-lg font-bold text-gray-800 ml-5">Việc làm mới nhất</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("JobList")}>
                     <Text className="text-green-600 font-bold text-base mr-5">Xem tất cả</Text>
                 </TouchableOpacity>
             </View>
