@@ -126,7 +126,7 @@ const ForgotPassword = ({ navigation }) => {
 
             <View>
                 <TouchableOpacity
-                    className="bg-[#509b43] w-full rounded-lg py-3 px-5 mb-4"
+                    className="bg-green-600 w-full rounded-lg py-3 px-5 mb-4"
                     onPress={handleResetPassword}
                 >
                     <Text className="text-white text-center text-lg">Tạo lại mật khẩu</Text>
