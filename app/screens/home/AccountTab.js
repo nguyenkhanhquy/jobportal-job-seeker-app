@@ -117,7 +117,6 @@ const AccountTab = ({ navigation }) => {
                                     deleteToken();
                                     setUserInfo(null);
                                     navigation.navigate("Auth", { screen: "Login" });
-                                    Alert.alert("Success", data.message);
                                 }
                             }
                         } catch (error) {
