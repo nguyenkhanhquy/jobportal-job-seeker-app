@@ -1,4 +1,4 @@
-import { postRequest } from "../api/request";
+import { getRequest, postRequest } from "../api/request";
 import { AUTH_API } from "../api/config";
 
 export const register = async (email, fullName, password) => {
@@ -47,4 +47,8 @@ export const updatePassword = async (token, password, newPassword) => {
             Authorization: `Bearer ${token}`,
         },
     });
+};
+
+export const getCurrentProfile = async () => {
+    return getRequest(AUTH_API.GET_CURRENT_PROFILE);
 };

@@ -7,7 +7,7 @@ import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 
 import { logout } from "../../services/authAPIService";
-import { getUsersInfo } from "../../services/usersAPIService";
+import { getCurrentProfile } from "../../services/authAPIService";
 import { updateAvatar } from "../../services/jobSeekerAPIService";
 
 import { getToken, deleteToken } from "../../utils/authStorage";
@@ -21,7 +21,7 @@ const AccountTab = ({ navigation }) => {
             setLoading(true);
             const token = await getToken();
             if (token) {
-                const data = await getUsersInfo(token);
+                const data = await getCurrentProfile(token);
                 if (data.success) {
                     setUserInfo(data.result);
                 } else {

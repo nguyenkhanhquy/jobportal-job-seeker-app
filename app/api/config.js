@@ -7,6 +7,7 @@ export const AUTH_API = {
     RESET_PASSWORD: "/auth/reset-password",
     ACTIVATE: "/auth/activate",
     UPDATE_PASSWORD: "/auth/update-password",
+    GET_CURRENT_PROFILE: "/auth/profile",
 };
 
 export const USERS_API = {
