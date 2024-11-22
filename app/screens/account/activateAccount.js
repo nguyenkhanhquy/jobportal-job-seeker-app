@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, TextInput, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 
-import { sendOtp, activate } from "../../services/authAPIService";
+import { sendOTP, activate } from "../../services/authService";
 import { getToken } from "../../utils/authStorage";
 
 const ActivateAccount = ({ route, navigation }) => {

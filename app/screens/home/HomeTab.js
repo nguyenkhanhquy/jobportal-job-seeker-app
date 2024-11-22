@@ -8,8 +8,9 @@ import JobCard from "../../components/JobCard";
 import SearchBar from "../../components/SearchBar";
 import LoginPrompt from "../../components/LoginPrompt";
 
-import { getListJobs } from "../../services/jobAPIService";
 import { getToken } from "../../utils/authStorage";
+
+import { getAllJobPosts, getPopularJobPosts } from "../../services/jobPostService";
 
 const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -27,18 +28,17 @@ const Home = ({ navigation }) => {
         setToken(savedToken);
     };
 
-    // Lấy token một lần khi component được render
     useEffect(() => {
         const fetchBestJobs = async () => {
             try {
-                const data = await getListJobs(1, 10);
+                const data = await getPopularJobPosts();
                 if (data.success) {
                     setListBestJobs(data.result);
                 } else {
                     Alert.alert("Lỗi", data.message);
                 }
             } catch (error) {
-                Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
+                Alert.alert("Lỗi", error.message);
             }
         };
 
@@ -48,7 +48,7 @@ const Home = ({ navigation }) => {
     const loadData = useCallback(async (newPage = 1) => {
         try {
             if (newPage === 1) setLoading(true);
-            const data = await getListJobs(newPage, 5); // Tải 5 công việc mỗi trang
+            const data = await getAllJobPosts(newPage, 5); // Tải 5 công việc mỗi trang
             if (data.success) {
                 if (newPage > 1) {
                     // Thêm các công việc mới

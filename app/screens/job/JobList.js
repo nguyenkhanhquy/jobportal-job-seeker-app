@@ -3,12 +3,11 @@ import { ActivityIndicator, View, Alert, FlatList } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 
-import LocationPicker from "../../components/LocationPicker";
+import SortPicker from "../../components/SortPicker";
 import SearchBar from "../../components/SearchBar";
 import JobCard from "../../components/JobCard";
 
-import { getSearchJobs, getFilterJobs } from "../../services/jobAPIService";
-import { getToken } from "../../utils/authStorage";
+import { getAllJobPosts } from "../../services/jobPostService";
 
 export default function JobList({ route, navigation }) {
     const searchQuery = route.params?.searchQuery;
@@ -16,26 +15,17 @@ export default function JobList({ route, navigation }) {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [listJobs, setListJobs] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedSort, setSelectedSort] = useState(null);
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
     const [query, setQuery] = useState(searchQuery); // State để lưu truy vấn tìm kiếm
 
-    // useEffect(() => {
-    //     const fetchToken = async () => {
-    //         const savedToken = await getToken();
-    //         setToken(savedToken);
-    //     };
-
-    //     fetchToken();
-    // }, []);
-
     const loadData = useCallback(
         async (newPage = 1) => {
             try {
                 if (newPage === 1) setLoading(true);
-                const data = await getFilterJobs(query, selectedLocation, newPage, 5); // Tải công việc theo từ khóa tìm kiếm
+                const data = await getAllJobPosts(newPage, 5, query, selectedSort); // Tải công việc theo từ khóa tìm kiếm
                 if (data.success) {
                     if (newPage > 1) {
                         setListJobs((prevJobs) => [...prevJobs, ...data.result]);
@@ -56,7 +46,7 @@ export default function JobList({ route, navigation }) {
                 setIsFetchingMore(false); // Dừng tải thêm dữ liệu
             }
         },
-        [query, selectedLocation]
+        [query, selectedSort]
     );
 
     useFocusEffect(
@@ -96,21 +86,59 @@ export default function JobList({ route, navigation }) {
     };
 
     return (
-        <View className="flex-1 bg-white">
-            <StatusBar style="auto" />
-            <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
-            <LocationPicker selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
-            <View className="flex-1 px-5">
-                <FlatList
-                    data={listJobs}
-                    renderItem={renderJobItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    vertical={true}
-                    onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.5}
-                    ListFooterComponent={renderFooter}
-                />
-            </View>
-        </View>
+        <>
+            {loading ? (
+                <View
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0, 0, 0, 0.1)", // Làm mờ phần nền xung quanh một chút
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 10,
+                    }}
+                >
+                    {/* Hình vuông chứa ActivityIndicator */}
+                    <View
+                        style={{
+                            width: 68, // Kích thước của hình vuông
+                            height: 68,
+                            backgroundColor: "#fff", // Màu nền trắng cho hình vuông
+                            borderRadius: 10, // Bo góc cho hình vuông
+                            justifyContent: "center",
+                            alignItems: "center",
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 2,
+                            elevation: 5, // Hiệu ứng đổ bóng cho Android
+                        }}
+                    >
+                        <ActivityIndicator size="large" color="#16a34a" />
+                    </View>
+                </View>
+            ) : (
+                <View className="flex-1 bg-white">
+                    <StatusBar style="auto" />
+                    <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
+                    <SortPicker selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
+
+                    <View className="flex-1 px-5">
+                        <FlatList
+                            data={listJobs}
+                            renderItem={renderJobItem}
+                            keyExtractor={(item) => item.id.toString()}
+                            vertical={true}
+                            onEndReached={handleLoadMore}
+                            onEndReachedThreshold={0.5}
+                            ListFooterComponent={renderFooter}
+                        />
+                    </View>
+                </View>
+            )}
+        </>
     );
 }

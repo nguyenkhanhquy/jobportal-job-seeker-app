@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } fro
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
-import { sendOtp } from "../../services/authAPIService";
+import { sendOTP } from "../../services/authService";
 
 const ForgotPassword = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ const ForgotPassword = ({ navigation }) => {
             setEmailError("");
 
             try {
-                const data = await sendOtp(email);
+                const data = await sendOTP(email);
 
                 if (data.success) {
                     showToast("success", "Success", data.message);

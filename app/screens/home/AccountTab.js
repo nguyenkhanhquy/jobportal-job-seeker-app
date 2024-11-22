@@ -6,9 +6,9 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 
-import { logout } from "../../services/authAPIService";
-import { getCurrentProfile } from "../../services/authAPIService";
-import { updateAvatar } from "../../services/jobSeekerAPIService";
+import { logout } from "../../services/authService";
+import { getAuthProfile } from "../../services/authService";
+import { updateAvatar } from "../../services/jobSeekerService";
 
 import { getToken, deleteToken } from "../../utils/authStorage";
 
@@ -21,7 +21,7 @@ const AccountTab = ({ navigation }) => {
             setLoading(true);
             const token = await getToken();
             if (token) {
-                const data = await getCurrentProfile(token);
+                const data = await getAuthProfile();
                 if (data.success) {
                     setUserInfo(data.result);
                 } else {
@@ -76,18 +76,15 @@ const AccountTab = ({ navigation }) => {
 
             try {
                 setLoading(true);
-                const token = await getToken();
-                if (token) {
-                    const data = await updateAvatar(token, avatar);
-                    if (data.success) {
-                        fetchUserInfo();
-                        Alert.alert("Success", data.message);
-                    } else {
-                        Alert.alert("Error", data.message);
-                    }
+                const data = await updateAvatar(avatar);
+                if (data.success) {
+                    fetchUserInfo();
+                    Alert.alert("Success", data.message);
+                } else {
+                    Alert.alert("Error", data.message);
                 }
             } catch (error) {
-                Alert.alert("Logout failed", "An error occurred. Please try again.");
+                Alert.alert("Lỗi", error.message);
             } finally {
                 setLoading(false);
             }
@@ -173,9 +170,9 @@ const AccountTab = ({ navigation }) => {
                         <View className="flex-1 ml-4">
                             <Text className="text-lg font-bold text-gray-800 mb-1">{userInfo.fullName}</Text>
                             <Text className="text-sm text-gray-600" numberOfLines={1} ellipsizeMode="tail">
-                                {userInfo.email}
+                                {userInfo.user.email}
                             </Text>
-                            {userInfo.active ? (
+                            {userInfo.user.active ? (
                                 <View className="flex-row items-center mt-2">
                                     <Octicons
                                         name="shield-check"
@@ -213,7 +210,7 @@ const AccountTab = ({ navigation }) => {
                         <TouchableOpacity
                             className="bg-white p-3 rounded-lg mb-4"
                             style={styles.shadowStyle}
-                            onPress={() => navigation.navigate("ChangePassword", { user: userInfo })}
+                            onPress={() => navigation.navigate("ChangePassword")}
                         >
                             <Text className="text-lg font-medium text-gray-800">Đổi mật khẩu</Text>
                         </TouchableOpacity>

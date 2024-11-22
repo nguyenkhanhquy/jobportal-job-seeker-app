@@ -39,13 +39,13 @@ const JobDetail = ({ route, navigation }) => {
                             elevation: 1,
                         }}
                     >
-                        <Image source={{ uri: job.logo }} className="w-24 h-24 rounded-xl" />
+                        <Image source={{ uri: job.company.logo }} className="w-24 h-24 rounded-xl" />
                     </View>
 
                     {/* Job Info */}
                     <View className="mt-12 items-center">
                         <Text className="text-xl font-bold text-gray-900 text-center">{job.title}</Text>
-                        <Text className="text-lg text-gray-600 text-center mt-2">{job.company}</Text>
+                        <Text className="text-lg text-gray-600 text-center mt-2">{job.company.name}</Text>
 
                         <View className="flex-row justify-around w-full mt-4">
                             <View className="items-center">
@@ -54,11 +54,11 @@ const JobDetail = ({ route, navigation }) => {
                             </View>
                             <View className="items-center">
                                 <Text className="text-sm font-bold text-gray-600">Địa chỉ</Text>
-                                <Text className="text-base text-green-600 mt-1">{job.address}</Text>
+                                <Text className="text-base text-green-600 mt-1">{job.company.address}</Text>
                             </View>
                             <View className="items-center">
-                                <Text className="text-sm font-bold text-gray-600">Kinh nghiệm</Text>
-                                <Text className="text-base text-green-600 mt-1">{job.experience}</Text>
+                                <Text className="text-sm font-bold text-gray-600">Vị trí tuyển dụng</Text>
+                                <Text className="text-base text-green-600 mt-1">{job.jobPosition}</Text>
                             </View>
                         </View>
                     </View>
@@ -68,20 +68,20 @@ const JobDetail = ({ route, navigation }) => {
                 <View className="mb-5">
                     <Text className="text-lg font-bold text-gray-800 mb-2">Thông tin chung</Text>
                     <View className="flex-row justify-between mb-2">
-                        <Text className="text-base font-bold text-gray-700">Hình thức:</Text>
+                        <Text className="text-base font-bold text-gray-700">Hợp đồng việc làm:</Text>
                         <Text className="text-base text-gray-600">{job.type}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
                         <Text className="text-base font-bold text-gray-700">Số lượng ứng tuyển:</Text>
-                        <Text className="text-base text-gray-600">{job.applicants}</Text>
+                        <Text className="text-base text-gray-600">{job.quantity}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
-                        <Text className="text-base font-bold text-gray-700">Giới tính:</Text>
-                        <Text className="text-base text-gray-600">{job.gender}</Text>
+                        <Text className="text-base font-bold text-gray-700">Hình thức làm việc:</Text>
+                        <Text className="text-base text-gray-600">{job.remote}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
                         <Text className="text-base font-bold text-gray-700">Hạn nộp hồ sơ:</Text>
-                        <Text className="text-base text-gray-600">{job.deadline}</Text>
+                        <Text className="text-base text-gray-600">{job.expiryDate}</Text>
                     </View>
                 </View>
 

@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
-import { resetPassword, sendOtp } from "../../services/authAPIService";
+import { resetPassword, sendOTP } from "../../services/authService";
 
 const ResetPassword = ({ navigation, route }) => {
     const { email } = route.params;
@@ -34,7 +34,7 @@ const ResetPassword = ({ navigation, route }) => {
         try {
             setOtp("");
             setLoading(true);
-            const data = await sendOtp(email);
+            const data = await sendOTP(email);
 
             if (data.success) {
                 showToast("success", "Success", data.message);
@@ -61,7 +61,7 @@ const ResetPassword = ({ navigation, route }) => {
 
         try {
             setLoading(true);
-            const data = await resetPassword(email, newPassword, otp);
+            const data = await resetPassword(email, otp, newPassword);
 
             if (data.success) {
                 showToast("success", "Success", data.message);

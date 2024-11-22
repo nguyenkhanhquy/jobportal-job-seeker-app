@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
 
-import { login } from "../../services/authAPIService";
+import { login } from "../../services/authService";
 
 import { handleLoginResponse } from "../../utils/authStorage";
 
@@ -74,7 +74,7 @@ const Login = ({ navigation }) => {
                 Alert.alert("Đăng nhập không thành công", data.message);
             }
         } catch (error) {
-            Alert.alert("Đăng nhập không thành công", "Đã xảy ra lỗi khi đăng nhập. Hãy thử lại.");
+            Alert.alert("Đăng nhập không thành công", error.message);
         } finally {
             setLoading(false);
         }

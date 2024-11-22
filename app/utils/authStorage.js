@@ -14,11 +14,6 @@ export const saveToken = async (token) => {
 export const getToken = async () => {
     try {
         const token = await SecureStore.getItemAsync("userToken");
-        if (token) {
-            console.log("Token đã lưu:", token);
-        } else {
-            console.log("Không có token nào được lưu.");
-        }
         return token;
     } catch (error) {
         console.error("Lỗi khi lấy token:", error);
@@ -30,7 +25,6 @@ export const getToken = async () => {
 export const deleteToken = async () => {
     try {
         await SecureStore.deleteItemAsync("userToken");
-        console.log("Token đã được xóa thành công.");
     } catch (error) {
         console.error("Lỗi khi xóa token:", error);
     }

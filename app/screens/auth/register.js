@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
 
-import { register } from "../../services/authAPIService";
+import { registerJobSeeker } from "../../services/authService";
 
 const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -96,7 +96,8 @@ const RegisterPage = ({ navigation }) => {
 
         try {
             setLoading(true);
-            const data = await register(email, fullName, password);
+            const body = { email, fullName, password };
+            const data = await registerJobSeeker(body);
             if (data.success) {
                 Alert.alert("Đăng ký thành công", data.message);
                 navigation.navigate("Login");
@@ -104,7 +105,7 @@ const RegisterPage = ({ navigation }) => {
                 Alert.alert("Đăng ký không thành công", data.message);
             }
         } catch (error) {
-            Alert.alert("Đăng ký không thành công", "Đã xảy ra lỗi khi đăng ký. Hãy thử lại.");
+            Alert.alert("Đăng ký không thành công", data.message);
         } finally {
             setLoading(false);
         }

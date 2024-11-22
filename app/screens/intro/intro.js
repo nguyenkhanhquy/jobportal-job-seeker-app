@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
-import { introspect } from "../../services/authAPIService";
+import { introspect } from "../../services/authService";
 import { getToken, deleteToken } from "../../utils/authStorage";
 
 import logo from "../../assets/img/logo.png";

@@ -3,10 +3,9 @@ import { ActivityIndicator, Text, TextInput, View, Alert, TouchableOpacity } fro
 
 import { StatusBar } from "expo-status-bar";
 
-import { updatePassword } from "../../services/authAPIService";
-import { getToken } from "../../utils/authStorage";
+import { updatePassword } from "../../services/authService";
 
-const ChangePassword = ({ route, navigation }) => {
+const ChangePassword = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
 
@@ -75,18 +74,17 @@ const ChangePassword = ({ route, navigation }) => {
 
         try {
             setLoading(true);
-            const token = await getToken();
-            if (token) {
-                const data = await updatePassword(token, password, newPassword);
-                if (data.success) {
-                    Alert.alert("Thành công", "Đổi mật khẩu thành công");
-                    navigation.goBack();
-                } else {
-                    Alert.alert("Lỗi", data.message);
-                }
+
+            const data = await updatePassword(password, newPassword);
+
+            if (data.success) {
+                Alert.alert("Thành công", "Đổi mật khẩu thành công");
+                navigation.goBack();
+            } else {
+                Alert.alert("Lỗi", data.message);
             }
         } catch (error) {
-            Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại");
+            Alert.alert("Lỗi", error.message);
         } finally {
             setLoading(false);
         }
@@ -140,17 +138,6 @@ const ChangePassword = ({ route, navigation }) => {
             )}
 
             <View className="bg-white px-3 py-5 mx-4 my-4">
-                <Text className="text-lg font-bold text-[#333] mb-2">Email đăng nhập</Text>
-                <View className="flex-row items-center w-full h-10 rounded-md mb-2 px-4 bg-[#f1f1f1] border border-[#e2e0e0]">
-                    <TextInput
-                        className="flex-1 h-full text-base"
-                        placeholder="Email"
-                        value={route.params.user.email}
-                        placeholderTextColor="#a0a0a0"
-                        editable={false}
-                    />
-                </View>
-
                 <Text className="text-lg font-bold text-[#333] mb-2">Mật khẩu hiện tại</Text>
                 <View className="flex-row items-center w-full h-10 rounded-md mb-2 px-4 bg-white border border-[#e2e0e0]">
                     <TextInput
