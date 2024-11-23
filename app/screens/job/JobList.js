@@ -24,10 +24,7 @@ export default function JobList({ route, navigation }) {
     const loadData = useCallback(
         async (newPage = 1) => {
             try {
-                if (newPage === 1) {
-                    setLoading(true);
-                    setIsFetchingMore(true);
-                }
+                if (newPage === 1) setLoading(true);
                 const data = await getAllJobPosts(newPage, 5, query, selectedSort); // Tải công việc theo từ khóa tìm kiếm
                 if (data.success) {
                     if (newPage > 1) {
@@ -94,16 +91,20 @@ export default function JobList({ route, navigation }) {
             <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
             <SortPicker selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
 
-            <View className="flex-1 px-5">
-                <FlatList
-                    data={listJobs}
-                    renderItem={renderJobItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    vertical={true}
-                    onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.5}
-                    ListFooterComponent={renderFooter}
-                />
+            <View className="flex-1 my-2 px-5">
+                {loading && listJobs.length === 0 ? (
+                    <ActivityIndicator size="large" color="#16a34a" />
+                ) : (
+                    <FlatList
+                        data={listJobs}
+                        renderItem={renderJobItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        vertical={true}
+                        onEndReached={handleLoadMore}
+                        onEndReachedThreshold={0.5}
+                        ListFooterComponent={renderFooter}
+                    />
+                )}
             </View>
         </View>
     );

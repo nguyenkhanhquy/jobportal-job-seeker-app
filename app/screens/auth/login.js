@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
+import Toast from "react-native-toast-message";
 
 import { login } from "../../services/authService";
 
@@ -22,6 +23,19 @@ const Login = ({ navigation }) => {
 
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     useFocusEffect(
         React.useCallback(() => {
@@ -71,10 +85,10 @@ const Login = ({ navigation }) => {
                     screen: "HomeTab",
                 });
             } else {
-                Alert.alert("Đăng nhập không thành công", data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            Alert.alert("Đăng nhập không thành công", error.message);
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }

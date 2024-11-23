@@ -37,12 +37,12 @@ const ResetPassword = ({ navigation, route }) => {
             const data = await sendOTP(email);
 
             if (data.success) {
-                showToast("success", "Success", data.message);
+                showToast("success", data.message);
             } else {
-                showToast("error", "Error", data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            Alert.alert("Error", "An error occurred. Please try again.");
+            showToast("error", data.message);
         } finally {
             setLoading(false);
         }
@@ -50,12 +50,12 @@ const ResetPassword = ({ navigation, route }) => {
 
     const handleResetPassword = async () => {
         if (!newPassword || !confirmPassword) {
-            Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin");
+            showToast("info", "Vui lòng điền đầy đủ thông tin");
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            Alert.alert("Lỗi", "Mật khẩu không trùng khớp");
+            showToast("info", "Mật khẩu không trùng khớp");
             return;
         }
 
@@ -64,13 +64,13 @@ const ResetPassword = ({ navigation, route }) => {
             const data = await resetPassword(email, otp, newPassword);
 
             if (data.success) {
-                showToast("success", "Success", data.message);
+                showToast("success", data.message);
                 navigation.navigate("Login");
             } else {
-                showToast("error", "Error", data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            Alert.alert("Lỗi", "Đã xảy ra lỗi. Hãy thử lại.");
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }

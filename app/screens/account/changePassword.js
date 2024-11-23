@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ActivityIndicator, Text, TextInput, View, Alert, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
 
 import { updatePassword } from "../../services/authService";
 
@@ -78,13 +79,13 @@ const ChangePassword = ({ navigation }) => {
             const data = await updatePassword(password, newPassword);
 
             if (data.success) {
-                Alert.alert("Thành công", "Đổi mật khẩu thành công");
+                showToast("success", data.message);
                 navigation.goBack();
             } else {
-                Alert.alert("Lỗi", data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            Alert.alert("Lỗi", error.message);
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }
@@ -96,6 +97,19 @@ const ChangePassword = ({ navigation }) => {
             navigation.goBack();
             setTimeout(() => setIsPressed(false), 300); // Reset trạng thái sau 300 milliseconds
         }
+    };
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
     };
 
     return (

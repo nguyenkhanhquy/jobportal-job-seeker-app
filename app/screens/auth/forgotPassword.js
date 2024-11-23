@@ -42,7 +42,7 @@ const ForgotPassword = ({ navigation }) => {
                 const data = await sendOTP(email);
 
                 if (data.success) {
-                    showToast("success", "Success", data.message);
+                    showToast("success", data.message);
                     navigation.navigate("ResetPassword", { email: email });
                     setOtpSent(true);
                 } else {
