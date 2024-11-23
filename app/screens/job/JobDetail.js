@@ -53,12 +53,14 @@ const JobDetail = ({ route, navigation }) => {
                                 <Text className="text-base text-green-600 mt-1">{job.salary}</Text>
                             </View>
                             <View className="items-center">
-                                <Text className="text-sm font-bold text-gray-600">Địa chỉ</Text>
-                                <Text className="text-base text-green-600 mt-1">{job.company.address}</Text>
+                                <Text className="text-sm font-bold text-gray-600">Loại hình</Text>
+                                <Text className="text-base text-green-600 mt-1">
+                                    {job.remote === "Làm việc kết hợp" ? "Kết hợp" : job.remote}
+                                </Text>
                             </View>
                             <View className="items-center">
-                                <Text className="text-sm font-bold text-gray-600">Vị trí tuyển dụng</Text>
-                                <Text className="text-base text-green-600 mt-1">{job.jobPosition}</Text>
+                                <Text className="text-sm font-bold text-gray-600">Loại hợp đồng</Text>
+                                <Text className="text-base text-green-600 mt-1">{job.type}</Text>
                             </View>
                         </View>
                     </View>
@@ -68,16 +70,12 @@ const JobDetail = ({ route, navigation }) => {
                 <View className="mb-5">
                     <Text className="text-lg font-bold text-gray-800 mb-2">Thông tin chung</Text>
                     <View className="flex-row justify-between mb-2">
-                        <Text className="text-base font-bold text-gray-700">Hợp đồng việc làm:</Text>
-                        <Text className="text-base text-gray-600">{job.type}</Text>
+                        <Text className="text-base font-bold text-gray-700">Vị trí tuyển dụng:</Text>
+                        <Text className="text-base text-gray-600">{job.jobPosition}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
-                        <Text className="text-base font-bold text-gray-700">Số lượng ứng tuyển:</Text>
+                        <Text className="text-base font-bold text-gray-700">Số lượng tuyển:</Text>
                         <Text className="text-base text-gray-600">{job.quantity}</Text>
-                    </View>
-                    <View className="flex-row justify-between mb-2">
-                        <Text className="text-base font-bold text-gray-700">Hình thức làm việc:</Text>
-                        <Text className="text-base text-gray-600">{job.remote}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
                         <Text className="text-base font-bold text-gray-700">Hạn nộp hồ sơ:</Text>
@@ -99,6 +97,11 @@ const JobDetail = ({ route, navigation }) => {
                 <View className="mb-5">
                     <Text className="text-lg font-bold text-gray-800 mb-2">Quyền lợi</Text>
                     <Text className="text-base text-gray-600 leading-6">{job.benefits}</Text>
+                </View>
+
+                <View className="mb-5">
+                    <Text className="text-lg font-bold text-gray-800 mb-2">Địa chỉ làm việc</Text>
+                    <Text className="text-base text-gray-600 leading-6">{job.address}</Text>
                 </View>
             </ScrollView>
 
