@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
 import HomeTab from "../../screens/home/HomeTab";
-import CV_ProfileTab from "../../screens/home/CV_ProfileTab";
+import AppliedJobsTab from "../../screens/home/AppliedJobsTab";
 import SavedJobsTab from "../../screens/home/SavedJobsTab";
 import NotificationTab from "../../screens/home/NotificationTab";
 import AccountTab from "../../screens/home/AccountTab";
@@ -20,8 +20,8 @@ const MainTabNavigator = () => {
                         case "HomeTab":
                             iconName = focused ? "home" : "home-outline";
                             break;
-                        case "CV_ProfileTab":
-                            iconName = focused ? "document" : "document-outline";
+                        case "AppliedJobsTab":
+                            iconName = focused ? "reader" : "reader-outline";
                             break;
                         case "SavedJobsTab":
                             iconName = focused ? "bookmark" : "bookmark-outline";
@@ -41,12 +41,12 @@ const MainTabNavigator = () => {
         >
             <Tab.Screen name="HomeTab" component={HomeTab} options={{ tabBarLabel: "Trang chủ" }} />
             <Tab.Screen
-                name="CV_ProfileTab"
-                component={CV_ProfileTab}
+                name="AppliedJobsTab"
+                component={AppliedJobsTab}
                 options={{
-                    tabBarLabel: "CV & Profile",
+                    tabBarLabel: "Đã ứng tuyển",
                     headerShown: true,
-                    headerTitle: "Quản lý CV",
+                    headerTitle: "Việc làm đã ứng tuyển",
                     headerTitleAlign: "center",
                     headerStyle: { backgroundColor: "#ffffff", borderColor: "#f0f0f0", borderBottomWidth: 1 },
                     headerTintColor: "#000",
