@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import SavedJobCard from "../../components/card/SavedJobsCard";
 import LoginPrompt from "../../components/LoginPrompt";
+import ConfirmDialog from "../../components/dialog/ConfirmDialog";
 
 import { getToken } from "../../utils/authStorage";
 
@@ -13,6 +14,7 @@ import { getAllJobPosts } from "../../services/jobPostService";
 const SavedJobsTab = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
+    const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false); // Trạng thái hiển thị ConfirmDialog
 
     const [listJobs, setListJobs] = useState([]);
 
@@ -63,6 +65,12 @@ const SavedJobsTab = ({ navigation }) => {
             fetchToken();
         }, [loadData])
     );
+
+    const handleDeleteAll = () => {
+        setListJobs([]); // Xóa toàn bộ danh sách
+        setConfirmDialogVisible(false); // Đóng ConfirmDialog
+        Alert.alert("Thành công", "Đã xóa tất cả công việc đã lưu.");
+    };
 
     // Xử lý lazy loading (tải thêm dữ liệu khi kéo tới cuối danh sách)
     const handleLoadMore = () => {
@@ -132,7 +140,7 @@ const SavedJobsTab = ({ navigation }) => {
 
             <View className="flex-row justify-between items-center my-2">
                 <Text className="text-lg font-bold text-gray-800 ml-5">{listJobs.length} Việc đã lưu </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setConfirmDialogVisible(true)}>
                     <Text className="text-green-600 font-bold text-base mr-5">Xóa tất cả</Text>
                 </TouchableOpacity>
             </View>
@@ -148,6 +156,13 @@ const SavedJobsTab = ({ navigation }) => {
                     ListFooterComponent={renderFooter}
                 />
             </View>
+
+            <ConfirmDialog
+                visible={ConfirmDialogVisible}
+                title="Bạn có chắc muốn xóa tất cả việc làm đã lưu?"
+                onConfirm={handleDeleteAll}
+                onCancel={() => setConfirmDialogVisible(false)}
+            />
         </View>
     );
 };
