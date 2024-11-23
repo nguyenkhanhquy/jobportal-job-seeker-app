@@ -50,10 +50,10 @@ const ResetPassword = ({ navigation, route }) => {
         try {
             setOtp("");
             setLoading(true);
-            setCountdown(300);
             const data = await sendOTP(email);
 
             if (data.success) {
+                setCountdown(300);
                 showToast("success", data.message);
             } else {
                 throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
@@ -135,8 +135,8 @@ const ResetPassword = ({ navigation, route }) => {
             <View>
                 <Text style={styles.title}>Đặt lại mật khẩu</Text>
                 <Text style={styles.description}>
-                    Chúng tôi đã gửi mã xác nhận tới địa chỉ <Text style={styles.bold}>{email}</Text>. Vui lòng kiểm tra
-                    hòm thư hoặc hòm thư spam để lấy mã và nhập vào bên dưới
+                    Chúng tôi đã gửi mã xác nhận tới địa chỉ email <Text style={styles.bold}>{email}</Text>. Vui lòng
+                    kiểm tra hòm thư hoặc hòm thư spam để lấy mã.
                 </Text>
 
                 <Text>
@@ -195,9 +195,8 @@ const ResetPassword = ({ navigation, route }) => {
 
                 <View>
                     <Text style={styles.noteText}>
-                        Mã xác nhận hết hạn sau{" "}
-                        <Text className="text-green-600 font-semibold">{formatTime(countdown)}</Text> phút kể từ khi bạn
-                        nhận được mã.
+                        Mã xác nhận hiện tại sẽ hết hạn sau{" "}
+                        <Text className="text-green-600 font-semibold">{formatTime(countdown)}</Text>.
                     </Text>
                 </View>
             </View>

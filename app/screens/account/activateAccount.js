@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, TextInput, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
-import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 
-import { sendOTP, activate } from "../../services/authService";
-import { getToken } from "../../utils/authStorage";
+import { sendOTP, activeAccount } from "../../services/authService";
 
 const ActivateAccount = ({ route, navigation }) => {
     const [isPressed, setIsPressed] = useState(false);
@@ -23,7 +21,8 @@ const ActivateAccount = ({ route, navigation }) => {
             type: type,
             text1: text1,
             text2: text2,
-            position: "top",
+            position: "bottom",
+            bottomOffset: 80,
             visibilityTime: 3000,
             text1Style: { fontSize: 16, fontWeight: "bold" },
             text2Style: { fontSize: 12 },
@@ -45,41 +44,37 @@ const ActivateAccount = ({ route, navigation }) => {
     };
 
     const handleSendOTP = async () => {
+        setLoading(true);
         try {
             setLoading(true);
+            const data = await sendOTP(email);
             setCountdown(300);
-            const data = await sendOtp(email);
-
             if (data.success) {
-                showToast("success", "Success", data.message);
+                showToast("success", data.message);
                 setOtpSent(true);
             } else {
-                showToast("error", "Error", data.message);
-                console.log(data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            showToast("error", "Error", "An error occurred. Please try again.");
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }
     };
 
     const handleConfirmOTP = async () => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const token = await getToken();
-            if (token) {
-                const data = await activate(token, otp);
+            const data = await activeAccount(email, otp);
 
-                if (data.success) {
-                    showToast("success", "Success", data.message);
-                    navigation.goBack();
-                } else {
-                    showToast("error", "Error", data.message);
-                }
+            if (data.success) {
+                showToast("success", data.message);
+                navigation.navigate("Login");
+            } else {
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            showToast("error", "Error", "An error occurred. Please try again.");
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }
@@ -183,8 +178,8 @@ const ActivateAccount = ({ route, navigation }) => {
             <View>
                 <Text style={styles.title}>Kích hoạt tài khoản</Text>
                 <Text style={styles.description}>
-                    Chúng tôi đã gửi mã xác nhận tới địa chỉ <Text style={styles.bold}>{email}</Text>. Vui lòng kiểm tra
-                    hòm thư hoặc hòm thư spam để lấy mã và nhập vào bên dưới
+                    Chúng tôi đã gửi mã xác nhận tới địa chỉ email <Text style={styles.bold}>{email}</Text>. Vui lòng
+                    kiểm tra hòm thư hoặc hòm thư spam để lấy mã.
                 </Text>
 
                 <Text>
@@ -206,9 +201,8 @@ const ActivateAccount = ({ route, navigation }) => {
 
                 <View>
                     <Text style={styles.noteText}>
-                        Mã xác nhận hết hạn sau{" "}
-                        <Text className="text-green-600 font-semibold">{formatTime(countdown)}</Text> phút kể từ khi bạn
-                        nhận được mã.
+                        Mã xác nhận hiện tại sẽ hết hạn sau{" "}
+                        <Text className="text-green-600 font-semibold">{formatTime(countdown)}</Text>.
                     </Text>
                 </View>
             </View>

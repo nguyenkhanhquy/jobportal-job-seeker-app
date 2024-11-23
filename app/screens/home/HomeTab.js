@@ -13,7 +13,7 @@ import { getToken } from "../../utils/authStorage";
 import { getAllJobPosts, getPopularJobPosts } from "../../services/jobPostService";
 
 const Home = ({ navigation }) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
 
     const [listBestJobs, setListBestJobs] = useState([]);
@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
 
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
-    const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
+    const [hasMoreData, setHasMoreData] = useState(false); // Theo dõi nếu còn dữ liệu để tải
 
     const fetchToken = async () => {
         const savedToken = await getToken();
@@ -86,7 +86,6 @@ const Home = ({ navigation }) => {
 
     const handleReload = () => {
         setPage(1);
-        setHasMoreData(true);
         loadData(1);
         fetchToken();
     };

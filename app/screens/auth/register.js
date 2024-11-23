@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { ActivityIndicator, Alert, Image, Switch, Text, TouchableOpacity, View, ImageBackground } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
 
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
 
 import { registerJobSeeker } from "../../services/authService";
+import { sendOTP } from "../../services/authService";
 
 const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -89,6 +91,19 @@ const RegisterPage = ({ navigation }) => {
         return valid;
     };
 
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
+
     const handleRegister = async () => {
         if (!validateInputs()) {
             return;
@@ -99,13 +114,18 @@ const RegisterPage = ({ navigation }) => {
             const body = { email, fullName, password };
             const data = await registerJobSeeker(body);
             if (data.success) {
-                Alert.alert("Đăng ký thành công", data.message);
-                navigation.navigate("Login");
+                const data = await sendOTP(email);
+                if (data.success) {
+                    navigation.navigate("ActivateAccount", { email: email });
+                    showToast("success", data.message);
+                } else {
+                    throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
+                }
             } else {
-                Alert.alert("Đăng ký không thành công", data.message);
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
         } catch (error) {
-            Alert.alert("Đăng ký không thành công", data.message);
+            showToast("error", error.message);
         } finally {
             setLoading(false);
         }

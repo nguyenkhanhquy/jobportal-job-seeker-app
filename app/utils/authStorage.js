@@ -25,6 +25,7 @@ export const getToken = async () => {
 export const deleteToken = async () => {
     try {
         await SecureStore.deleteItemAsync("userToken");
+        console.log("Token đã được xóa thành công");
     } catch (error) {
         console.error("Lỗi khi xóa token:", error);
     }

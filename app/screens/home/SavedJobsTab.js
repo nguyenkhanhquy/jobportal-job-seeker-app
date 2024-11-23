@@ -4,6 +4,7 @@ import { Alert, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
+import EmptyCard from "../../components/card/EmptyCard";
 import SavedJobCard from "../../components/card/SavedJobsCard";
 import LoginPrompt from "../../components/LoginPrompt";
 import ConfirmDialog from "../../components/dialog/ConfirmDialog";
@@ -13,7 +14,7 @@ import { getToken } from "../../utils/authStorage";
 import { getAllJobSaved, deleteAllJobSaved } from "../../services/jobSavedService";
 
 const SavedJobsTab = ({ navigation }) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
     const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false); // Trạng thái hiển thị ConfirmDialog
 
@@ -22,7 +23,7 @@ const SavedJobsTab = ({ navigation }) => {
 
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
-    const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
+    const [hasMoreData, setHasMoreData] = useState(false); // Theo dõi nếu còn dữ liệu để tải
 
     const showToast = (type, text1, text2) => {
         Toast.show({
@@ -37,44 +38,41 @@ const SavedJobsTab = ({ navigation }) => {
         });
     };
 
-    const fetchToken = async () => {
-        const savedToken = await getToken();
-        setToken(savedToken);
-    };
-
     const loadData = useCallback(async (newPage = 1) => {
-        try {
-            if (newPage === 1) setLoading(true);
-            const data = await getAllJobSaved(newPage, 6);
-            if (data.success) {
-                setTotalElements(data.pageInfo.totalElements);
-                if (newPage > 1) {
-                    // Thêm các công việc mới
-                    setListJobs((prevJobs) => [...prevJobs, ...data.result]);
+        const token = await getToken();
+        if (token) {
+            setToken(token);
+            try {
+                if (newPage === 1) setLoading(true);
+                const data = await getAllJobSaved(newPage, 6);
+                if (data.success) {
+                    setTotalElements(data.pageInfo.totalElements);
+                    if (newPage > 1) {
+                        // Thêm các công việc mới
+                        setListJobs((prevJobs) => [...prevJobs, ...data.result]);
+                    } else {
+                        // Tải trang đầu tiên của danh sách công việc
+                        setListJobs(data.result);
+                    }
+                    // Kiểm tra xem còn dữ liệu để tải hay không
+                    if (data.result.length === 0) {
+                        setHasMoreData(false);
+                    }
                 } else {
-                    // Tải trang đầu tiên của danh sách công việc
-                    setListJobs(data.result);
+                    Alert.alert("Lỗi", data.message || "Tải dữ liệu thất bại.");
                 }
-                // Kiểm tra xem còn dữ liệu để tải hay không
-                if (data.result.length === 0) {
-                    setHasMoreData(false);
-                }
-            } else {
-                Alert.alert("Lỗi", data.message || "Tải dữ liệu thất bại.");
+            } catch (error) {
+                Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
+            } finally {
+                setLoading(false);
+                setIsFetchingMore(false); // Dừng tải thêm dữ liệu
             }
-        } catch (error) {
-            Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
-        } finally {
-            setLoading(false);
-            setIsFetchingMore(false); // Dừng tải thêm dữ liệu
         }
     }, []);
 
     // Tải dữ liệu ban đầu khi component được focus
     useFocusEffect(
         useCallback(() => {
-            fetchToken();
-            if (token === null) return;
             // Đặt lại phân trang khi quay lại màn hình
             setPage(1);
             setHasMoreData(true);
@@ -172,15 +170,19 @@ const SavedJobsTab = ({ navigation }) => {
                     </View>
 
                     <View className="flex-1 px-5">
-                        <FlatList
-                            data={listJobs}
-                            renderItem={renderJobItem}
-                            keyExtractor={(item) => item.id.toString()}
-                            vertical={true}
-                            onEndReached={handleLoadMore}
-                            onEndReachedThreshold={0.5}
-                            ListFooterComponent={renderFooter}
-                        />
+                        {listJobs.length === 0 ? (
+                            <EmptyCard />
+                        ) : (
+                            <FlatList
+                                data={listJobs}
+                                renderItem={renderJobItem}
+                                keyExtractor={(item) => item.id.toString()}
+                                vertical={true}
+                                onEndReached={handleLoadMore}
+                                onEndReachedThreshold={0.5}
+                                ListFooterComponent={renderFooter}
+                            />
+                        )}
                     </View>
 
                     <ConfirmDialog

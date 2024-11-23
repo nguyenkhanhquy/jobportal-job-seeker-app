@@ -17,8 +17,8 @@ const AccountTab = ({ navigation }) => {
     const [userInfo, setUserInfo] = useState(null);
 
     const fetchUserInfo = useCallback(async () => {
+        setLoading(true);
         try {
-            setLoading(true);
             const token = await getToken();
             if (token) {
                 const data = await getAuthProfile();
@@ -89,7 +89,7 @@ const AccountTab = ({ navigation }) => {
                 setLoading(false);
             }
         } else {
-            Alert.alert("Đã hủy", "Bạn đã hủy chọn ảnh.");
+            // Alert.alert("Đã hủy", "Bạn đã hủy chọn ảnh.");
         }
     };
 

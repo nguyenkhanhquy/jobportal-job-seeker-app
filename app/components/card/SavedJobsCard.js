@@ -89,6 +89,17 @@ const SavedJobCard = ({ job, onPress }) => {
                 <View className="flex-row space-x-2 mb-2">
                     <Text className={getExpiryDateStyle(job.expiryDate)}>
                         Ngày hết hạn: {formatDate(job.expiryDate)}
+                        {" - "}
+                        {(() => {
+                            switch (getExpiryStatus(job.expiryDate)) {
+                                case "expired":
+                                    return "Hết hạn";
+                                case "warning":
+                                    return "Sắp hết hạn";
+                                default:
+                                    return "Còn hạn";
+                            }
+                        })()}
                     </Text>
                 </View>
             </View>
