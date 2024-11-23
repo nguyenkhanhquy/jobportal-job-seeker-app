@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
 import HomeTab from "../../screens/home/HomeTab";
 import CV_ProfileTab from "../../screens/home/CV_ProfileTab";
-import JobConnectTab from "../../screens/home/JobConnectTab";
+import SavedJobsTab from "../../screens/home/SavedJobsTab";
 import NotificationTab from "../../screens/home/NotificationTab";
 import AccountTab from "../../screens/home/AccountTab";
 
@@ -23,8 +23,8 @@ const MainTabNavigator = () => {
                         case "CV_ProfileTab":
                             iconName = focused ? "document" : "document-outline";
                             break;
-                        case "JobConnectTab":
-                            iconName = focused ? "chatbox-ellipses" : "chatbox-ellipses-outline";
+                        case "SavedJobsTab":
+                            iconName = focused ? "bookmark" : "bookmark-outline";
                             break;
                         case "NotificationScreen":
                             iconName = focused ? "notifications" : "notifications-outline";
@@ -52,7 +52,18 @@ const MainTabNavigator = () => {
                     headerTintColor: "#000",
                 }}
             />
-            <Tab.Screen name="JobConnectTab" component={JobConnectTab} options={{ tabBarLabel: "Job Connect" }} />
+            <Tab.Screen
+                name="SavedJobsTab"
+                component={SavedJobsTab}
+                options={{
+                    tabBarLabel: "Đã lưu",
+                    headerShown: true,
+                    headerTitle: "Việc làm đã lưu",
+                    headerTitleAlign: "center",
+                    headerStyle: { backgroundColor: "#ffffff", borderColor: "#f0f0f0", borderBottomWidth: 1 },
+                    headerTintColor: "#000",
+                }}
+            />
             <Tab.Screen name="NotificationScreen" component={NotificationTab} options={{ tabBarLabel: "Thông Báo" }} />
             <Tab.Screen name="AccountTab" component={AccountTab} options={{ tabBarLabel: "Tài Khoản" }} />
         </Tab.Navigator>
