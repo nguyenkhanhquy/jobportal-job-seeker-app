@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ActivityIndicator, StyleSheet, Text, TextInput, View, Alert, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +17,8 @@ const ResetPassword = ({ navigation, route }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPass, setShowConfirmPass] = useState(false);
 
+    const [countdown, setCountdown] = useState(300);
+
     const showToast = (type, text1, text2) => {
         Toast.show({
             type: type,
@@ -30,10 +32,25 @@ const ResetPassword = ({ navigation, route }) => {
         });
     };
 
+    // Countdown logic
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setInterval(() => setCountdown((prev) => prev - 1), 1000);
+            return () => clearInterval(timer);
+        }
+    }, [countdown]);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+    };
+
     const handleSendOtp = async () => {
         try {
             setOtp("");
             setLoading(true);
+            setCountdown(300);
             const data = await sendOTP(email);
 
             if (data.success) {
@@ -177,7 +194,11 @@ const ResetPassword = ({ navigation, route }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.noteText}>Mã xác nhận hết hạn sau 5 phút kể từ khi bạn nhận được mã.</Text>
+                    <Text style={styles.noteText}>
+                        Mã xác nhận hết hạn sau{" "}
+                        <Text className="text-green-600 font-semibold">{formatTime(countdown)}</Text> phút kể từ khi bạn
+                        nhận được mã.
+                    </Text>
                 </View>
             </View>
             <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
