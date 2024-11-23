@@ -7,12 +7,12 @@ import Intro from "../../screens/intro/intro";
 import Starter from "../../screens/starter/starter";
 import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";
-import CVNavigator from "./CVNavigator";
 
 import ActivateAccount from "../../screens/account/activateAccount";
 import Profile from "../../screens/account/profile";
 import ChangePassword from "../../screens/account/changePassword";
 import JobDetail from "../../screens/job/JobDetail";
+import JobApplicationScreen from "../../screens/job/JobApplicationScreen/JobApplicationScreen";
 import JobList from "../../screens/job/JobList";
 
 const Stack = createStackNavigator();
@@ -31,7 +31,6 @@ const AppNavigator = () => {
                 <Stack.Screen name="Starter" component={Starter} />
                 <Stack.Screen name="Auth" component={AuthNavigator} />
                 <Stack.Screen name="Home" component={MainTabNavigator} />
-                <Stack.Screen name="CV" component={CVNavigator} />
 
                 <Stack.Screen name="ActivateAccount" component={ActivateAccount} />
                 <Stack.Screen
@@ -45,6 +44,17 @@ const AppNavigator = () => {
                     options={{ headerShown: true, headerTitle: "Đổi mật khẩu", headerTitleAlign: "center" }}
                 />
                 <Stack.Screen name="JobDetail" component={JobDetail} />
+                <Stack.Screen
+                    name="JobApplication"
+                    component={JobApplicationScreen}
+                    options={{
+                        headerShown: true,
+                        headerTitle: "Ứng tuyển",
+                        headerTitleAlign: "center",
+                        headerStyle: { backgroundColor: "#ffffff", borderColor: "#f0f0f0", borderBottomWidth: 1 },
+                        headerTintColor: "#000",
+                    }}
+                />
                 <Stack.Screen
                     name="JobList"
                     component={JobList}

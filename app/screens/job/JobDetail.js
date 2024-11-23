@@ -16,6 +16,10 @@ const JobDetail = ({ route, navigation }) => {
         }
     };
 
+    const handleApply = () => {
+        navigation.navigate("JobApplication", { jobId: job.id });
+    };
+
     return (
         <View className="flex-1 bg-gray-100">
             <StatusBar style="auto" />
@@ -107,7 +111,7 @@ const JobDetail = ({ route, navigation }) => {
 
             {/* Apply Button */}
             <View className="absolute bottom-0 left-0 right-0 bg-white p-1 border-t border-gray-200">
-                <TouchableOpacity className="bg-green-600 py-3 rounded-lg items-center">
+                <TouchableOpacity className="bg-green-600 py-3 rounded-lg items-center" onPress={handleApply}>
                     <Text className="text-white text-lg font-bold">Ứng tuyển ngay</Text>
                 </TouchableOpacity>
             </View>
