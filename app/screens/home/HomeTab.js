@@ -84,6 +84,13 @@ const Home = ({ navigation }) => {
         }, [loadData])
     );
 
+    const handleReload = () => {
+        setPage(1);
+        setHasMoreData(true);
+        loadData(1);
+        fetchToken();
+    };
+
     // Xử lý lazy loading (tải thêm dữ liệu khi kéo tới cuối danh sách)
     const handleLoadMore = () => {
         if (!isFetchingMore && hasMoreData) {
@@ -170,8 +177,10 @@ const Home = ({ navigation }) => {
                     renderItem={renderJobItem}
                     keyExtractor={(item) => item.id.toString()}
                     vertical={true}
+                    onStartReached={handleReload}
+                    onStartReachedThreshold={0}
                     onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.5}
+                    onEndReachedThreshold={0}
                     ListFooterComponent={renderFooter}
                 />
             </View>

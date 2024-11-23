@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Alert, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
 
 import SavedJobCard from "../../components/card/SavedJobsCard";
 import LoginPrompt from "../../components/LoginPrompt";
@@ -9,7 +10,7 @@ import ConfirmDialog from "../../components/dialog/ConfirmDialog";
 
 import { getToken } from "../../utils/authStorage";
 
-import { getAllJobPosts } from "../../services/jobPostService";
+import { getAllJobSaved, deleteAllJobSaved } from "../../services/jobSavedService";
 
 const SavedJobsTab = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -17,10 +18,24 @@ const SavedJobsTab = ({ navigation }) => {
     const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false); // Trạng thái hiển thị ConfirmDialog
 
     const [listJobs, setListJobs] = useState([]);
+    const [totalElements, setTotalElements] = useState(0); // Tổng số công việc đã lưu
 
     const [page, setPage] = useState(1); // Theo dõi trang hiện tại
     const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
     const [hasMoreData, setHasMoreData] = useState(true); // Theo dõi nếu còn dữ liệu để tải
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     const fetchToken = async () => {
         const savedToken = await getToken();
@@ -30,8 +45,9 @@ const SavedJobsTab = ({ navigation }) => {
     const loadData = useCallback(async (newPage = 1) => {
         try {
             if (newPage === 1) setLoading(true);
-            const data = await getAllJobPosts(newPage, 5); // Tải 5 công việc mỗi trang
+            const data = await getAllJobSaved(newPage, 6);
             if (data.success) {
+                setTotalElements(data.pageInfo.totalElements);
                 if (newPage > 1) {
                     // Thêm các công việc mới
                     setListJobs((prevJobs) => [...prevJobs, ...data.result]);
@@ -44,7 +60,7 @@ const SavedJobsTab = ({ navigation }) => {
                     setHasMoreData(false);
                 }
             } else {
-                Alert.alert("Lỗi", data.message);
+                Alert.alert("Lỗi", data.message || "Tải dữ liệu thất bại.");
             }
         } catch (error) {
             Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
@@ -57,19 +73,27 @@ const SavedJobsTab = ({ navigation }) => {
     // Tải dữ liệu ban đầu khi component được focus
     useFocusEffect(
         useCallback(() => {
+            fetchToken();
+            if (token === null) return;
             // Đặt lại phân trang khi quay lại màn hình
             setPage(1);
             setHasMoreData(true);
             loadData(1); // Đặt lại trang về 1
-
-            fetchToken();
         }, [loadData])
     );
 
-    const handleDeleteAll = () => {
-        setListJobs([]); // Xóa toàn bộ danh sách
-        setConfirmDialogVisible(false); // Đóng ConfirmDialog
-        Alert.alert("Thành công", "Đã xóa tất cả công việc đã lưu.");
+    const handleDeleteAll = async () => {
+        // Hàm xử lý khi xác nhận xóa tất cả
+        try {
+            await deleteAllJobSaved();
+            setListJobs([]); // Xóa toàn bộ danh sách
+            setTotalElements(0); // Đặt lại tổng số công việc đã lưu
+            showToast("success", "Đã xóa tất cả công việc đã lưu");
+        } catch (error) {
+            showToast("error", error?.message || "Lỗi máy chủ, vui lòng thử lại sau!");
+        } finally {
+            setConfirmDialogVisible(false); // Đóng ConfirmDialog
+        }
     };
 
     // Xử lý lazy loading (tải thêm dữ liệu khi kéo tới cuối danh sách)
@@ -136,33 +160,37 @@ const SavedJobsTab = ({ navigation }) => {
                 </View>
             )}
 
-            {token === null && <LoginPrompt />}
+            {token === null ? (
+                <LoginPrompt />
+            ) : (
+                <>
+                    <View className="flex-row justify-between items-center my-2">
+                        <Text className="text-lg font-bold text-gray-800 ml-5">{totalElements} Việc đã lưu </Text>
+                        <TouchableOpacity onPress={() => setConfirmDialogVisible(true)}>
+                            <Text className="text-green-600 font-bold text-base mr-5">Xóa tất cả</Text>
+                        </TouchableOpacity>
+                    </View>
 
-            <View className="flex-row justify-between items-center my-2">
-                <Text className="text-lg font-bold text-gray-800 ml-5">{listJobs.length} Việc đã lưu </Text>
-                <TouchableOpacity onPress={() => setConfirmDialogVisible(true)}>
-                    <Text className="text-green-600 font-bold text-base mr-5">Xóa tất cả</Text>
-                </TouchableOpacity>
-            </View>
+                    <View className="flex-1 px-5">
+                        <FlatList
+                            data={listJobs}
+                            renderItem={renderJobItem}
+                            keyExtractor={(item) => item.id.toString()}
+                            vertical={true}
+                            onEndReached={handleLoadMore}
+                            onEndReachedThreshold={0.5}
+                            ListFooterComponent={renderFooter}
+                        />
+                    </View>
 
-            <View className="flex-1 px-5">
-                <FlatList
-                    data={listJobs}
-                    renderItem={renderJobItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    vertical={true}
-                    onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0.5}
-                    ListFooterComponent={renderFooter}
-                />
-            </View>
-
-            <ConfirmDialog
-                visible={ConfirmDialogVisible}
-                title="Bạn có chắc muốn xóa tất cả việc làm đã lưu?"
-                onConfirm={handleDeleteAll}
-                onCancel={() => setConfirmDialogVisible(false)}
-            />
+                    <ConfirmDialog
+                        visible={ConfirmDialogVisible}
+                        title="Bạn có chắc muốn xóa tất cả việc làm đã lưu?"
+                        onConfirm={handleDeleteAll}
+                        onCancel={() => setConfirmDialogVisible(false)}
+                    />
+                </>
+            )}
         </View>
     );
 };

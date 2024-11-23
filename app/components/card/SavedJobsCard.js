@@ -3,11 +3,12 @@ import { TouchableOpacity, View, Image, Text, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { saveJobPost } from "../../services/jobPostService";
 import Toast from "react-native-toast-message";
+import { formatDate } from "../../utils/dateUtil";
 
 const screenWidth = Dimensions.get("window").width;
 
 const SavedJobCard = ({ job, onPress }) => {
-    const [isSaved, setIsSaved] = useState(job.saved);
+    const [isSaved, setIsSaved] = useState(true);
 
     const showToast = (type, text1, text2) => {
         Toast.show({
@@ -40,8 +41,34 @@ const SavedJobCard = ({ job, onPress }) => {
     };
 
     useEffect(() => {
-        setIsSaved(job.saved);
-    }, [job.id, job.saved]);
+        setIsSaved(true);
+    }, [job.id]);
+
+    const getExpiryStatus = (expiryDate) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        today.setDate(today.getDate() + 1);
+        const expiry = new Date(expiryDate);
+
+        // Tính số ngày còn lại
+        const daysRemaining = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+        if (daysRemaining < 0) return "expired";
+        if (daysRemaining <= 3) return "warning";
+        return "active";
+    };
+
+    const getExpiryDateStyle = (expiryDate) => {
+        const status = getExpiryStatus(expiryDate);
+        switch (status) {
+            case "expired":
+                return "text-xs text-red-600 bg-red-50 py-1 px-2 rounded-md";
+            case "warning":
+                return "text-xs text-orange-600 bg-orange-50 py-1 px-2 rounded-md";
+            default:
+                return "text-xs text-green-600 bg-[#e8f5e9] py-1 px-2 rounded-md";
+        }
+    };
 
     return (
         <TouchableOpacity
@@ -60,8 +87,9 @@ const SavedJobCard = ({ job, onPress }) => {
                 </Text>
 
                 <View className="flex-row space-x-2 mb-2">
-                    <Text className="text-xs text-gray-700 bg-gray-100 py-1 px-2 rounded-md">{job.type}</Text>
-                    <Text className="text-xs text-green-600 bg-[#e8f5e9] py-1 px-2 rounded-md">{job.salary}</Text>
+                    <Text className={getExpiryDateStyle(job.expiryDate)}>
+                        Ngày hết hạn: {formatDate(job.expiryDate)}
+                    </Text>
                 </View>
             </View>
 
