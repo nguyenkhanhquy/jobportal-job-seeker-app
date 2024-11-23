@@ -22,6 +22,7 @@
         "nativewind": "^2.0.11",
         "react": "18.2.0",
         "react-native": "0.74.5",
+        "react-native-svg": "^15.9.0",
         "react-native-toast-message": "^2.2.1"
     },
     "devDependencies": {
