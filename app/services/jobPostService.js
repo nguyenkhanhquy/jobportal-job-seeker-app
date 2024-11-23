@@ -27,7 +27,7 @@ export const getPopularJobPosts = async () => {
     return axiosClient.get(JOBS_API.GET_ALL_POPULAR, {
         params: {
             page: 1,
-            size: 9,
+            size: 10,
         },
     });
 };
