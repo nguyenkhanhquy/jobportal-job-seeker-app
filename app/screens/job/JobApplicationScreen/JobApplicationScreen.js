@@ -69,7 +69,7 @@ const JobApplicationScreen = ({ route, navigation }) => {
                 <TextInput
                     className="bg-gray-50 rounded-lg border border-gray-200 p-4 mt-2 text-gray-800"
                     style={{ height: 120, textAlignVertical: "top" }}
-                    placeholder="Viết giới thiệu ngắn ngọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn, lý do làm việc tại công ty này"
+                    placeholder="Viết giới thiệu ngắn ngọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn được làm việc tại công ty."
                     multiline={true}
                     value={coverLetter}
                     onChangeText={setCoverLetter}
