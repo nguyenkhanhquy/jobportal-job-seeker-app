@@ -9,9 +9,14 @@ export const applyJob = async (jobPostId, coverLetter, cv) => {
     });
 };
 
-export const uploadCV = async (file) => {
+export const uploadCV = async (cv) => {
     const formData = new FormData();
-    formData.append("cv", file);
+    formData.append("cv", {
+        uri: cv.uri,
+        type: cv.type,
+        name: cv.name,
+    });
+
     return axiosClient.post(JOBS_APPLY_API.UPLOAD_CV, formData, {
         headers: {
             "Content-Type": "multipart/form-data",

@@ -51,7 +51,7 @@ const JobDetail = ({ route, navigation }) => {
     const handleApply = async () => {
         const token = await getToken();
         if (token) {
-            navigation.navigate("JobApplication", { jobId: job.id });
+            navigation.navigate("JobApplication", { jobPostId: job.id });
         } else {
             showToast("info", "Vui lòng đăng nhập để ứng tuyển");
         }

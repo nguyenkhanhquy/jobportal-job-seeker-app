@@ -1,36 +1,92 @@
 import React, { useState } from "react";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
-// import * as DocumentPicker from "expo-document-picker";
+import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 import { Ionicons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 import uploadFile from "../../../assets/img/uploadFile.jpg";
 
+import { applyJob, uploadCV } from "../../../services/jobApplyService";
+
 const JobApplicationScreen = ({ route, navigation }) => {
+    const { jobPostId } = route.params;
+
+    const [loading, setLoading] = useState(false);
     const [coverLetter, setCoverLetter] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
 
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
+
     // Xử lý chọn tệp
     const handleFilePick = async () => {
-        // try {
-        //     const result = await DocumentPicker.getDocumentAsync({
-        //         type: [
-        //             "application/pdf",
-        //             "application/msword",
-        //             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        //         ],
-        //     });
-        //     // Kiểm tra nếu tệp chọn thành công và kiểu tệp hợp lệ
-        //     if (result.type === "success") {
-        //         setSelectedFile(result); // Lưu thông tin tệp vào state
-        //     } else {
-        //         Alert.alert("Lỗi", "Không có tệp nào được chọn.");
-        //     }
-        // } catch (error) {
-        //     Alert.alert("Lỗi", "Đã xảy ra lỗi khi chọn tệp.");
-        // }
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: [
+                    "application/pdf",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                ],
+                copyToCacheDirectory: true,
+            });
+
+            if (result.canceled) {
+                showToast("info", "Bạn đã hủy chọn tệp");
+                return;
+            }
+
+            const file = result.assets[0];
+
+            // Kiểm tra kích thước file (ví dụ: giới hạn 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast("error", "File không được vượt quá 5MB");
+                return;
+            }
+
+            setSelectedFile(file);
+        } catch (error) {
+            showToast("error", "Đã xảy ra lỗi khi chọn tệp");
+        }
     };
 
     const handleRemoveFile = () => {
         setSelectedFile(null);
+    };
+
+    const handleApply = async () => {
+        setLoading(true);
+        try {
+            if (selectedFile && coverLetter !== "") {
+                const cv = {
+                    uri: selectedFile.uri,
+                    type: selectedFile.mimeType,
+                    name: selectedFile.name,
+                };
+
+                const dataUpload = await uploadCV(cv);
+                const data = await applyJob(jobPostId, coverLetter, dataUpload.result);
+                if (!data.success) {
+                    throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
+                }
+                showToast("success", data.message);
+                navigation.goBack();
+            } else {
+                showToast("info", "Vui lòng cung cấp đầy đủ thông tin");
+            }
+        } catch (error) {
+            showToast("error", error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -78,7 +134,7 @@ const JobApplicationScreen = ({ route, navigation }) => {
 
             {/* Apply Button */}
             <View className="px-4 pb-2 mt-auto">
-                <TouchableOpacity className="bg-green-600 rounded-lg py-3 px-5 items-center" onPress={() => {}}>
+                <TouchableOpacity className="bg-green-600 rounded-lg py-3 px-5 items-center" onPress={handleApply}>
                     <Text className="text-white font-bold text-base">Ứng tuyển</Text>
                 </TouchableOpacity>
             </View>

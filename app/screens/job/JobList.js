@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { ActivityIndicator, View, Alert, FlatList } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -89,10 +89,16 @@ export default function JobList({ route, navigation }) {
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
             <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
-            <SortPicker selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
+            <SortPicker
+                selectedSort={selectedSort}
+                setSelectedSort={(value) => {
+                    setSelectedSort(value);
+                    setLoading(true);
+                }}
+            />
 
             <View className="flex-1 my-2 px-5">
-                {loading && listJobs.length === 0 ? (
+                {loading ? (
                     <ActivityIndicator size="large" color="#16a34a" />
                 ) : (
                     <FlatList

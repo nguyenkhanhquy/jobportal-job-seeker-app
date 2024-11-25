@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Text, TextInput, View, TouchableOpacity, Alert } from "react-native";
+import { ActivityIndicator, Text, TextInput, View, TouchableOpacity } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
@@ -11,11 +12,14 @@ const Profile = ({ route, navigation }) => {
     const [isPressed, setIsPressed] = useState(false);
 
     const email = route.params.user.user.email;
+    const dob = route.params.user.dob;
 
     const [fullName, setFullName] = useState(route.params.user.fullName);
     const [fullNameError, setFullNameError] = useState("");
 
     const [address, setAddress] = useState(route.params.user.address);
+
+    const [phone, setPhone] = useState(route.params.user.phone);
 
     const [workExperience, setWorkExperience] = useState(route.params.user.workExperience);
 
@@ -32,7 +36,7 @@ const Profile = ({ route, navigation }) => {
         try {
             setLoading(true);
 
-            const body = { fullName, address, workExperience, phone: "0315487985", dob: "2003-12-12" };
+            const body = { fullName, address, workExperience, phone, dob: dob };
 
             const data = await updateProfile(body);
 
@@ -145,15 +149,29 @@ const Profile = ({ route, navigation }) => {
                     />
                 </View>
 
-                <Text className="text-base font-bold mb-2">Kinh nghiệm làm việc</Text>
+                <Text className="text-base font-bold mb-2">Số điện thoại</Text>
                 <View className="bg-white rounded-lg px-4 py-3 mb-4">
                     <TextInput
                         className="text-base text-gray-700"
-                        placeholder="Nhập kinh nghiệm làm việc"
+                        placeholder="Nhập địa chỉ"
                         placeholderTextColor="#a0a0a0"
-                        value={workExperience}
-                        onChangeText={setWorkExperience}
+                        value={phone}
+                        onChangeText={setPhone}
                     />
+                </View>
+
+                <Text className="text-base font-bold mb-2">Kinh nghiệm làm việc</Text>
+                <View className="bg-white rounded-lg   mb-2">
+                    <Picker selectedValue={workExperience} onValueChange={(itemValue) => setWorkExperience(itemValue)}>
+                        <Picker.Item label="Chọn kinh nghiệm làm việc" value="" />
+                        <Picker.Item label="Dưới 1 năm" value="Dưới 1 năm" />
+                        <Picker.Item label="1 năm" value="1 năm" />
+                        <Picker.Item label="2 năm" value="2 năm" />
+                        <Picker.Item label="3 năm" value="3 năm" />
+                        <Picker.Item label="4 năm" value="4 năm" />
+                        <Picker.Item label="5 năm" value="5 năm" />
+                        <Picker.Item label="Trên 5 năm" value="Trên 5 năm" />
+                    </Picker>
                 </View>
             </View>
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { Alert, View, ActivityIndicator, ScrollView } from "react-native";
+import { Linking, Alert, View, ActivityIndicator, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AppliedJobCard from "../../components/card/AppliedJobCard";
 import LoginPrompt from "../../components/LoginPrompt";
@@ -23,8 +23,20 @@ const AppliedJobsTab = ({ navigation }) => {
         navigation.navigate("JobDetail", { job });
     };
 
-    const handleViewCV = (job) => {
-        // console.log("Viewing CV for:", job.title);
+    const handleViewCV = async (job) => {
+        console.log("Viewing CV for:", job.cv);
+        try {
+            const supported = await Linking.canOpenURL(job.cv);
+
+            if (supported) {
+                await Linking.openURL(job.cv);
+            } else {
+                Alert.alert("Lỗi", "Không thể mở file CV");
+            }
+        } catch (error) {
+            Alert.alert("Lỗi", "Không thể mở file CV");
+            console.error(error);
+        }
     };
 
     const loadData = useCallback(async (newPage = 1) => {

@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity, Alert, Ima
 import { useFocusEffect } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
+import Toast from "react-native-toast-message";
 import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 
@@ -15,6 +16,19 @@ import { getToken, deleteToken } from "../../utils/authStorage";
 const AccountTab = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     const fetchUserInfo = useCallback(async () => {
         setLoading(true);
@@ -89,7 +103,7 @@ const AccountTab = ({ navigation }) => {
                 setLoading(false);
             }
         } else {
-            // Alert.alert("Đã hủy", "Bạn đã hủy chọn ảnh.");
+            showToast("info", "Bạn đã hủy chọn ảnh");
         }
     };
 
