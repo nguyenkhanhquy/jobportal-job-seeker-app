@@ -88,7 +88,9 @@ export default function JobList({ route, navigation }) {
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
+
             <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
+
             <SortPicker
                 selectedSort={selectedSort}
                 setSelectedSort={(value) => {

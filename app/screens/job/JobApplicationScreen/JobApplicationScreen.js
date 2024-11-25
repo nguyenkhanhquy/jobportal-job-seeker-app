@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import uploadFile from "../../../assets/img/uploadFile.jpg";
+import { StatusBar } from "expo-status-bar";
 
 import { applyJob, uploadCV } from "../../../services/jobApplyService";
 
@@ -91,6 +92,43 @@ const JobApplicationScreen = ({ route, navigation }) => {
 
     return (
         <View className="flex-1 bg-white">
+            <StatusBar style="auto" />
+
+            {loading && (
+                <View
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0, 0, 0, 0.1)", // Làm mờ phần nền xung quanh một chút
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 10,
+                    }}
+                >
+                    {/* Hình vuông chứa ActivityIndicator */}
+                    <View
+                        style={{
+                            width: 68, // Kích thước của hình vuông
+                            height: 68,
+                            backgroundColor: "#fff", // Màu nền trắng cho hình vuông
+                            borderRadius: 10, // Bo góc cho hình vuông
+                            justifyContent: "center",
+                            alignItems: "center",
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 2,
+                            elevation: 5, // Hiệu ứng đổ bóng cho Android
+                        }}
+                    >
+                        <ActivityIndicator size="large" color="#16a34a" />
+                    </View>
+                </View>
+            )}
+
             {/* Upload Section */}
             <View className="p-4">
                 <Text className="text-lg font-bold text-gray-800 mb-2">CV ứng tuyển</Text>
