@@ -6,6 +6,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 import Toast from "react-native-toast-message";
 import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
+import OverLoading from "../../components/loaders/OverlayLoading";
 
 import { logout } from "../../services/authService";
 import { getAuthProfile } from "../../services/authService";
@@ -142,18 +143,21 @@ const AccountTab = ({ navigation }) => {
         );
     };
 
-    if (loading) {
-        return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <StatusBar style="auto" />
-                <ActivityIndicator size="large" color="#16a34a" />
-            </View>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    //             <StatusBar style="auto" />
+    //             <ActivityIndicator size="large" color="#16a34a" />
+    //         </View>
+    //     );
+    // }
 
     return (
         <View className="flex-1 bg-gray-100">
             <StatusBar style="auto" />
+
+            {loading && <OverLoading />}
+
             {/* Background Section */}
             <View className="bg-green-600 h-36 w-full absolute top-0 left-0 right-0 z-[-1]" />
 

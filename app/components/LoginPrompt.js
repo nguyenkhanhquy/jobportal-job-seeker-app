@@ -13,7 +13,7 @@ const LoginPrompt = () => {
                 <Image source={logo} className="w-16 h-16 mr-4" resizeMode="contain" />
 
                 <Text className="flex-1 text-base text-black">
-                    Đăng nhập ngay để có được những trải nghiệm hấp dẫn cá nhân hóa dành cho bạn!
+                    Đăng nhập ngay để có được những trải nghiệm hấp dẫn dành cho bạn!
                 </Text>
             </View>
 

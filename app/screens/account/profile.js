@@ -178,12 +178,12 @@ const Profile = ({ route, navigation }) => {
             {/* Button Section */}
             <View className="flex-row justify-between bg-white py-3 px-2">
                 <TouchableOpacity
-                    className="border border-[#509b43] rounded-full py-3 px-4 w-[49%]"
+                    className="border border-[#16a34a] rounded-full py-3 px-4 w-[49%]"
                     onPress={handleCancel}
                 >
-                    <Text className="text-[#509b43] text-center font-bold text-base">Hủy</Text>
+                    <Text className="text-[#16a34a] text-center font-bold text-base">Hủy</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="bg-[#509b43] rounded-full py-3 px-4 w-[49%]" onPress={handleSave}>
+                <TouchableOpacity className="bg-[#16a34a] rounded-full py-3 px-4 w-[49%]" onPress={handleSave}>
                     <Text className="text-white text-center font-bold text-base">Lưu</Text>
                 </TouchableOpacity>
             </View>

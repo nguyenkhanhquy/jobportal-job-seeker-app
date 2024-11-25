@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { Alert, View, Text, TouchableOpacity, FlatList } from "react-native";
+import { ActivityIndicator, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
@@ -60,10 +60,10 @@ const SavedJobsTab = ({ navigation }) => {
                         setHasMoreData(false);
                     }
                 } else {
-                    Alert.alert("Lỗi", data.message || "Tải dữ liệu thất bại.");
+                    showToast("error", data.message || "Tải dữ liệu thất bại.");
                 }
             } catch (error) {
-                Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
+                showToast("error", error?.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             } finally {
                 setLoading(false);
                 setIsFetchingMore(false); // Dừng tải thêm dữ liệu
@@ -74,7 +74,6 @@ const SavedJobsTab = ({ navigation }) => {
     // Tải dữ liệu ban đầu khi component được focus
     useFocusEffect(
         useCallback(() => {
-            // Đặt lại phân trang khi quay lại màn hình
             setPage(1);
             setHasMoreData(true);
             loadData(1); // Đặt lại trang về 1
@@ -114,10 +113,6 @@ const SavedJobsTab = ({ navigation }) => {
     const renderFooter = () => {
         if (!isFetchingMore) return null;
         return <ActivityIndicator size="large" color="#16a34a" />;
-    };
-
-    const handleSearchSubmit = (query) => {
-        navigation.navigate("JobList", { searchQuery: query });
     };
 
     return (

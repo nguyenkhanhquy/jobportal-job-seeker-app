@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 const Notification = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Notification</Text>
+            <Text style={styles.title}>Thông báo</Text>
         </View>
     );
 };
