@@ -4,7 +4,8 @@ import { ActivityIndicator, Text, TextInput, View, TouchableOpacity } from "reac
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
-import { updatePassword } from "../../services/authService";
+import { updatePassword, logout } from "../../services/authService";
+import { getToken, deleteToken } from "../../utils/authStorage";
 
 const ChangePassword = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -29,6 +30,8 @@ const ChangePassword = ({ navigation }) => {
     const validateNewPassword = (value) => {
         if (value.trim() === "") {
             setNewPasswordError("Vui lòng nhập mật khẩu mới");
+        } else if (value.length < 8) {
+            setNewPasswordError("Mật khẩu mới phải có ít nhất 8 ký tự");
         } else {
             setNewPasswordError("");
         }
@@ -80,7 +83,19 @@ const ChangePassword = ({ navigation }) => {
 
             if (data.success) {
                 showToast("success", data.message);
-                navigation.goBack();
+                try {
+                    const token = await getToken();
+                    if (token) {
+                        const data = await logout(token);
+                        if (data.success) {
+                            deleteToken();
+                            showToast("info", "Vui lòng đăng nhập lại");
+                            navigation.navigate("Auth", { screen: "Login" });
+                        }
+                    }
+                } catch (error) {
+                    showToast("error", "Đăng xuất thất bại");
+                }
             } else {
                 throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }

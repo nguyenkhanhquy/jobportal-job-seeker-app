@@ -93,12 +93,12 @@ const AccountTab = ({ navigation }) => {
                 const data = await updateAvatar(avatar);
                 if (data.success) {
                     fetchUserInfo();
-                    Alert.alert("Success", data.message);
+                    showToast("success", data.message);
                 } else {
-                    Alert.alert("Error", data.message);
+                    showToast("error", data.message);
                 }
             } catch (error) {
-                Alert.alert("Lỗi", error.message);
+                showToast("error", "Cập nhật ảnh đại diện thất bại.");
             } finally {
                 setLoading(false);
             }

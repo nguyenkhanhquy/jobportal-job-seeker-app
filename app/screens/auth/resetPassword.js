@@ -71,6 +71,11 @@ const ResetPassword = ({ navigation, route }) => {
             return;
         }
 
+        if (newPassword.length < 8) {
+            showToast("info", "Mật khẩu mới phải chứa ít nhất 8 ký tự");
+            return;
+        }
+
         if (newPassword !== confirmPassword) {
             showToast("info", "Mật khẩu không trùng khớp");
             return;

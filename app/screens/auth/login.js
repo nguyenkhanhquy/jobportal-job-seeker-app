@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, Image, Text, TouchableOpacity, View, ImageBackground } from "react-native";
+import { Image, Text, TouchableOpacity, View, ImageBackground } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 
 import logo from "../../assets/img/logo.png";
 import InputField from "../../components/InputField";
+import OverlayLoading from "../../components/loaders/OverlayLoading";
 import Toast from "react-native-toast-message";
 
-import { login } from "../../services/authService";
-
+import { login, logout } from "../../services/authService";
 import { handleLoginResponse } from "../../utils/authStorage";
 
 const emailRegex =
@@ -78,6 +78,10 @@ const Login = ({ navigation }) => {
             setLoading(true);
             const data = await login(email, password);
             if (data.success) {
+                if (data.result.role !== "JOB_SEEKER") {
+                    await logout(data.result.token);
+                    throw new Error("Loại tài khoản không hợp lệ!");
+                }
                 setEmail("");
                 setPassword("");
                 handleLoginResponse(data);
@@ -101,40 +105,7 @@ const Login = ({ navigation }) => {
         >
             <StatusBar style="auto" />
 
-            {loading && (
-                <View
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "rgba(0, 0, 0, 0.1)", // Làm mờ phần nền xung quanh một chút
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 10,
-                    }}
-                >
-                    {/* Hình vuông chứa ActivityIndicator */}
-                    <View
-                        style={{
-                            width: 68, // Kích thước của hình vuông
-                            height: 68,
-                            backgroundColor: "#fff", // Màu nền trắng cho hình vuông
-                            borderRadius: 10, // Bo góc cho hình vuông
-                            justifyContent: "center",
-                            alignItems: "center",
-                            shadowColor: "#000",
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 2,
-                            elevation: 5, // Hiệu ứng đổ bóng cho Android
-                        }}
-                    >
-                        <ActivityIndicator size="large" color="#16a34a" />
-                    </View>
-                </View>
-            )}
+            {loading && <OverlayLoading />}
 
             <Image source={logo} className="w-40 h-40 mt-6" />
             <Text className="text-lg text-gray-800 mb-10 text-center">Chào mừng bạn đến với JOB PORTAL</Text>

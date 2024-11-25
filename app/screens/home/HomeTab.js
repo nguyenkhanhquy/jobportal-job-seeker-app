@@ -7,159 +7,138 @@ import Carousel from "../../components/Carousel";
 import JobCard from "../../components/JobCard";
 import SearchBar from "../../components/SearchBar";
 import LoginPrompt from "../../components/LoginPrompt";
+import OverlayLoading from "../../components/loaders/OverlayLoading";
 
 import { getToken } from "../../utils/authStorage";
-
 import { getAllJobPosts, getPopularJobPosts } from "../../services/jobPostService";
 
-const Home = ({ navigation }) => {
-    const [loading, setLoading] = useState(false);
-    const [token, setToken] = useState(null);
+const ITEMS_PER_PAGE = 5;
 
+const Home = ({ navigation }) => {
+    const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(null);
     const [listBestJobs, setListBestJobs] = useState([]);
     const [listJobs, setListJobs] = useState([]);
+    const [page, setPage] = useState(1);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
-    const [page, setPage] = useState(1); // Theo dõi trang hiện tại
-    const [isFetchingMore, setIsFetchingMore] = useState(false); // Theo dõi quá trình tải thêm dữ liệu
-    const [hasMoreData, setHasMoreData] = useState(false); // Theo dõi nếu còn dữ liệu để tải
-
-    const fetchToken = async () => {
+    // Tách riêng logic fetch token
+    const fetchToken = useCallback(async () => {
         const savedToken = await getToken();
         setToken(savedToken);
-    };
-
-    useEffect(() => {
-        const fetchBestJobs = async () => {
-            try {
-                const data = await getPopularJobPosts();
-                if (data.success) {
-                    setListBestJobs(data.result);
-                } else {
-                    Alert.alert("Lỗi", data.message);
-                }
-            } catch (error) {
-                Alert.alert("Lỗi", error.message);
-            }
-        };
-
-        fetchBestJobs();
     }, []);
 
-    const loadData = useCallback(async (newPage = 1) => {
+    // Tách riêng logic fetch best jobs
+    const fetchBestJobs = useCallback(async () => {
         try {
-            if (newPage === 1) setLoading(true);
-            const data = await getAllJobPosts(newPage, 5); // Tải 5 công việc mỗi trang
+            const data = await getPopularJobPosts();
             if (data.success) {
-                if (newPage > 1) {
-                    // Thêm các công việc mới
-                    setListJobs((prevJobs) => [...prevJobs, ...data.result]);
-                } else {
-                    // Tải trang đầu tiên của danh sách công việc
-                    setListJobs(data.result);
-                }
-                // Kiểm tra xem còn dữ liệu để tải hay không
-                if (data.result.length === 0) {
-                    setHasMoreData(false);
-                }
+                setListBestJobs(data.result);
             } else {
                 Alert.alert("Lỗi", data.message);
             }
         } catch (error) {
-            Alert.alert("Lỗi", "Tải dữ liệu thất bại.");
-        } finally {
-            setLoading(false);
-            setIsFetchingMore(false); // Dừng tải thêm dữ liệu
+            console.error("Fetch best jobs error:", error);
+            Alert.alert("Lỗi", "Không thể tải việc làm nổi bật");
         }
     }, []);
 
-    // Tải dữ liệu ban đầu khi component được focus
+    // Tối ưu lại loadData
+    const loadData = useCallback(async (newPage = 1, isRefresh = false) => {
+        try {
+            if (newPage === 1 && !isRefresh) {
+                setLoading(true);
+            }
+
+            const data = await getAllJobPosts(newPage, ITEMS_PER_PAGE);
+
+            if (data.success) {
+                if (newPage === 1) {
+                    setListJobs(data.result);
+                } else {
+                    setListJobs((prev) => [...prev, ...data.result]);
+                }
+
+                setHasMoreData(data.result.length === ITEMS_PER_PAGE);
+            } else {
+                Alert.alert("Lỗi", data.message);
+            }
+        } catch (error) {
+            console.error("Load data error:", error);
+            Alert.alert("Lỗi", "Không thể tải danh sách việc làm");
+        } finally {
+            setLoading(false);
+            setIsFetchingMore(false);
+            setIsRefreshing(false);
+        }
+    }, []);
+
+    // Initial load
+    useEffect(() => {
+        fetchBestJobs();
+    }, [fetchBestJobs]);
+
+    // Focus effect
     useFocusEffect(
         useCallback(() => {
-            // Đặt lại phân trang khi quay lại màn hình
-            setPage(1);
-            setHasMoreData(true);
-            loadData(1); // Đặt lại trang về 1
-
             fetchToken();
-        }, [loadData])
+            setPage(1);
+            loadData(1);
+        }, [fetchToken, loadData])
     );
 
-    const handleReload = () => {
+    // Refresh handler
+    const handleRefresh = useCallback(() => {
+        setIsRefreshing(true);
         setPage(1);
-        loadData(1);
-        fetchToken();
-    };
+        loadData(1, true);
+        fetchBestJobs();
+    }, [loadData, fetchBestJobs]);
 
-    // Xử lý lazy loading (tải thêm dữ liệu khi kéo tới cuối danh sách)
-    const handleLoadMore = () => {
-        if (!isFetchingMore && hasMoreData) {
+    // Load more handler
+    const handleLoadMore = useCallback(() => {
+        if (!isFetchingMore && hasMoreData && !loading) {
             setIsFetchingMore(true);
-            setPage((prevPage) => {
-                const newPage = prevPage + 1;
+            setPage((prev) => {
+                const newPage = prev + 1;
                 loadData(newPage);
                 return newPage;
             });
         }
-    };
+    }, [isFetchingMore, hasMoreData, loading, loadData]);
 
-    const renderJobItem = ({ item }) => (
-        <JobCard job={item} onPress={() => navigation.navigate("JobDetail", { job: item })} />
+    // Render methods
+    const renderJobItem = useCallback(
+        ({ item }) => <JobCard job={item} onPress={() => navigation.navigate("JobDetail", { job: item })} />,
+        [navigation]
     );
 
-    const renderFooter = () => {
+    const renderFooter = useCallback(() => {
         if (!isFetchingMore) return null;
-        return <ActivityIndicator size="large" color="#16a34a" />;
-    };
+        return (
+            <View className="py-2">
+                <ActivityIndicator size="large" color="#16a34a" />
+            </View>
+        );
+    }, [isFetchingMore]);
 
-    const handleSearchSubmit = (query) => {
-        navigation.navigate("JobList", { searchQuery: query });
-    };
+    const renderLoader = useCallback(() => <OverlayLoading />, []);
 
     return (
         <View className="flex-1 bg-white">
             <StatusBar style="auto" />
 
-            {loading && (
-                <View
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "rgba(0, 0, 0, 0.1)", // Làm mờ phần nền xung quanh một chút
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 10,
-                    }}
-                >
-                    {/* Hình vuông chứa ActivityIndicator */}
-                    <View
-                        style={{
-                            width: 68, // Kích thước của hình vuông
-                            height: 68,
-                            backgroundColor: "#fff", // Màu nền trắng cho hình vuông
-                            borderRadius: 10, // Bo góc cho hình vuông
-                            justifyContent: "center",
-                            alignItems: "center",
-                            shadowColor: "#000",
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 2,
-                            elevation: 5, // Hiệu ứng đổ bóng cho Android
-                        }}
-                    >
-                        <ActivityIndicator size="large" color="#16a34a" />
-                    </View>
-                </View>
-            )}
+            {loading && renderLoader()}
 
             <View className="mt-10" />
-            <SearchBar onSubmit={handleSearchSubmit} />
+            <SearchBar onSubmit={(query) => navigation.navigate("JobList", { searchQuery: query })} />
 
             {token === null && <LoginPrompt />}
 
             <Text className="text-lg font-bold text-gray-800 mb-2 ml-5">Việc làm được quan tâm nhất</Text>
+
             <Carousel data={listBestJobs} renderItem={renderJobItem} />
 
             <View className="flex-row justify-between items-center mb-2">
@@ -169,18 +148,19 @@ const Home = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* <Carousel data={listJobs} renderItem={renderJobItem} horizontal={false} /> */}
             <View className="flex-1 px-5">
                 <FlatList
                     data={listJobs}
                     renderItem={renderJobItem}
                     keyExtractor={(item) => item.id.toString()}
-                    vertical={true}
-                    onStartReached={handleReload}
-                    onStartReachedThreshold={0}
+                    refreshing={isRefreshing}
+                    onRefresh={handleRefresh}
                     onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0}
+                    onEndReachedThreshold={0.5}
                     ListFooterComponent={renderFooter}
+                    removeClippedSubviews={true}
+                    maxToRenderPerBatch={5}
+                    windowSize={10}
                 />
             </View>
         </View>

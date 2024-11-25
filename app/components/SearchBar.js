@@ -2,21 +2,11 @@ import React, { useState } from "react";
 import { View, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const SearchBar = ({ onSubmit, onSearch, searchQuery }) => {
+const SearchBar = ({ onSubmit, searchQuery }) => {
     const [query, setQuery] = useState(searchQuery);
 
-    const handleChange = (text) => {
-        setQuery(text);
-
-        if (onSearch) {
-            onSearch(text);
-        }
-    };
-
     const handleSubmit = () => {
-        if (onSubmit) {
-            onSubmit(query);
-        }
+        onSubmit(query);
     };
 
     return (
@@ -26,7 +16,7 @@ const SearchBar = ({ onSubmit, onSearch, searchQuery }) => {
                 className="flex-1 text-base text-gray-700"
                 placeholder="Tìm kiếm công việc"
                 value={query}
-                onChangeText={handleChange}
+                onChangeText={setQuery}
                 onSubmitEditing={handleSubmit}
             />
         </View>

@@ -73,6 +73,9 @@ const RegisterPage = ({ navigation }) => {
         if (!password) {
             setPasswordError("Mật khẩu không được để trống");
             valid = false;
+        } else if (password.length < 8) {
+            setPasswordError("Mật khẩu phải có ít nhất 8 ký tự");
+            valid = false;
         } else {
             setPasswordError("");
         }
