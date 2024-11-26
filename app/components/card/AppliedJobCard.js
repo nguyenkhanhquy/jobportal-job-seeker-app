@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const AppliedJobCard = ({ job, onViewDetail, onViewCV }) => {
     return (
-        <View className="bg-white rounded-lg p-4 shadow mb-4">
+        <View className="bg-white rounded-lg p-4 border border-green-500 shadow mb-4">
             {/* Job Info */}
             <Text className="text-lg font-bold text-green-600">{job.title}</Text>
             <Text className="text-base text-gray-800 mt-1">

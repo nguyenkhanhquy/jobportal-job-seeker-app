@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -8,8 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 import OverLoading from "../../components/loaders/OverlayLoading";
 
-import { logout } from "../../services/authService";
-import { getAuthProfile } from "../../services/authService";
+import { getAuthProfile, logout } from "../../services/authService";
 import { updateAvatar } from "../../services/jobSeekerService";
 
 import { getToken, deleteToken } from "../../utils/authStorage";
@@ -44,7 +43,7 @@ const AccountTab = ({ navigation }) => {
                 }
             }
         } catch (error) {
-            Alert.alert("Error", "Failed to fetch user information.");
+            showToast("error", "Không thể lấy thông tin người dùng.");
         } finally {
             setLoading(false);
         }

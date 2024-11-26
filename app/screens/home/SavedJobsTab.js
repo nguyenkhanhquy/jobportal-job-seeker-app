@@ -68,6 +68,8 @@ const SavedJobsTab = ({ navigation }) => {
                 setLoading(false);
                 setIsFetchingMore(false); // Dừng tải thêm dữ liệu
             }
+        } else {
+            setToken(null);
         }
     }, []);
 
