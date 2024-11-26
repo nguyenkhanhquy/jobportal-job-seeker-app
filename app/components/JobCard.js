@@ -7,7 +7,7 @@ import Toast from "react-native-toast-message";
 const screenWidth = Dimensions.get("window").width;
 
 const JobCard = ({ job, onPress }) => {
-    const [isSaved, setIsSaved] = useState(job.saved);
+    const [isSaved, setIsSaved] = useState(false);
 
     const showToast = (type, text1, text2) => {
         Toast.show({

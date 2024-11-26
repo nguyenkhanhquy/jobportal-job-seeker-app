@@ -33,7 +33,7 @@ const Home = ({ navigation }) => {
     // Tách riêng logic fetch best jobs
     const fetchBestJobs = useCallback(async () => {
         try {
-            const data = await getPopularJobPosts();
+            const data = await getAllJobPosts(1, 10, "", "oldest");
             if (data.success) {
                 setListBestJobs(data.result);
             } else {
@@ -109,10 +109,8 @@ const Home = ({ navigation }) => {
         }
     }, [isFetchingMore, hasMoreData, loading, loadData]);
 
-    // Render methods
-    const renderJobItem = useCallback(
-        ({ item }) => <JobCard job={item} onPress={() => navigation.navigate("JobDetail", { job: item })} />,
-        [navigation]
+    const renderJobItem = ({ item }) => (
+        <JobCard job={item} onPress={() => navigation.navigate("JobDetail", { job: item })} />
     );
 
     const renderFooter = useCallback(() => {

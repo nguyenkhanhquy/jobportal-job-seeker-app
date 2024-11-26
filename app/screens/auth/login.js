@@ -80,7 +80,7 @@ const Login = ({ navigation }) => {
             if (data.success) {
                 if (data.result.role !== "JOB_SEEKER") {
                     await logout(data.result.token);
-                    throw new Error("Loại tài khoản không hợp lệ!");
+                    throw new Error("Quyền tài khoản không hợp lệ!");
                 }
                 setEmail("");
                 setPassword("");

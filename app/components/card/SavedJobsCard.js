@@ -7,7 +7,7 @@ import { formatDate } from "../../utils/dateUtil";
 
 const screenWidth = Dimensions.get("window").width;
 
-const SavedJobCard = ({ job, onPress }) => {
+const SavedJobCard = ({ job, setFlag, onPress }) => {
     const [isSaved, setIsSaved] = useState(true);
 
     const showToast = (type, text1, text2) => {
@@ -30,6 +30,7 @@ const SavedJobCard = ({ job, onPress }) => {
                 throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
             }
             setIsSaved((prev) => !prev);
+            setFlag((prev) => !prev);
             showToast("success", data.message);
         } catch (error) {
             if (error.statusCode === 401) {

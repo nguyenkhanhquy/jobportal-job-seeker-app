@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { ActivityIndicator, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +17,7 @@ import { getAllJobSaved, deleteAllJobSaved } from "../../services/jobSavedServic
 const SavedJobsTab = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
+    const [flag, setFlag] = useState(false);
     const [ConfirmDialogVisible, setConfirmDialogVisible] = useState(false); // Trạng thái hiển thị ConfirmDialog
 
     const [listJobs, setListJobs] = useState([]);
@@ -38,6 +39,12 @@ const SavedJobsTab = ({ navigation }) => {
             text2Style: { fontSize: 12 },
         });
     };
+
+    useEffect(() => {
+        setPage(1);
+        setHasMoreData(true);
+        loadData(1);
+    }, [flag]);
 
     const loadData = useCallback(async (newPage = 1) => {
         const token = await getToken();
@@ -78,7 +85,7 @@ const SavedJobsTab = ({ navigation }) => {
         useCallback(() => {
             setPage(1);
             setHasMoreData(true);
-            loadData(1); // Đặt lại trang về 1
+            loadData(1);
         }, [loadData])
     );
 
@@ -109,7 +116,7 @@ const SavedJobsTab = ({ navigation }) => {
     };
 
     const renderJobItem = ({ item }) => (
-        <SavedJobCard job={item} onPress={() => navigation.navigate("JobDetail", { job: item })} />
+        <SavedJobCard job={item} setFlag={setFlag} onPress={() => navigation.navigate("JobDetail", { job: item })} />
     );
 
     const renderFooter = () => {
