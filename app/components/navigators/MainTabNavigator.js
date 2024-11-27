@@ -64,7 +64,7 @@ const MainTabNavigator = () => {
                     headerTintColor: "#000",
                 }}
             />
-            <Tab.Screen name="NotificationScreen" component={NotificationTab} options={{ tabBarLabel: "Thông Báo" }} />
+            {/* <Tab.Screen name="NotificationScreen" component={NotificationTab} options={{ tabBarLabel: "Thông Báo" }} /> */}
             <Tab.Screen name="AccountTab" component={AccountTab} options={{ tabBarLabel: "Tài Khoản" }} />
         </Tab.Navigator>
     );

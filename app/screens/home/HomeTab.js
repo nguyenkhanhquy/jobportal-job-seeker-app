@@ -154,7 +154,7 @@ const Home = ({ navigation }) => {
                     refreshing={isRefreshing}
                     onRefresh={handleRefresh}
                     onEndReached={handleLoadMore}
-                    onEndReachedThreshold={0}
+                    onEndReachedThreshold={0.5}
                     ListFooterComponent={renderFooter}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}

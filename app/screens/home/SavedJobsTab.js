@@ -12,6 +12,7 @@ import OverLoading from "../../components/loaders/OverlayLoading";
 
 import { getToken } from "../../utils/authStorage";
 
+import { getJobPostById } from "../../services/jobPostService";
 import { getAllJobSaved, deleteAllJobSaved } from "../../services/jobSavedService";
 
 const SavedJobsTab = ({ navigation }) => {
@@ -115,8 +116,13 @@ const SavedJobsTab = ({ navigation }) => {
         }
     };
 
+    const handleViewDetail = async (jobPostId) => {
+        const data = await getJobPostById(jobPostId);
+        navigation.navigate("JobDetail", { job: data.result });
+    };
+
     const renderJobItem = ({ item }) => (
-        <SavedJobCard job={item} setFlag={setFlag} onPress={() => navigation.navigate("JobDetail", { job: item })} />
+        <SavedJobCard job={item} setFlag={setFlag} onPress={() => handleViewDetail(item.id)} />
     );
 
     const renderFooter = () => {

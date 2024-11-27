@@ -8,6 +8,7 @@ import LoginPrompt from "../../components/LoginPrompt";
 import EmptyCard from "../../components/card/EmptyCard";
 import OverlayLoading from "../../components/loaders/OverlayLoading";
 
+import { getJobPostById } from "../../services/jobPostService";
 import { getAllJobApplied } from "../../services/jobApplyService";
 import { getToken } from "../../utils/authStorage";
 
@@ -100,17 +101,18 @@ const AppliedJobsTab = ({ navigation }) => {
         }
     }, [isFetchingMore, hasMoreData, loading, loadData]);
 
-    const handleViewDetail = (job) => {
-        navigation.navigate("JobDetail", { job });
+    const handleViewDetail = async (jobPostId) => {
+        const data = await getJobPostById(jobPostId);
+        navigation.navigate("JobDetail", { job: data.result });
     };
 
-    const handleViewCV = async (job) => {
+    const handleViewCV = async (cv) => {
         // job.jobPostId
         try {
-            const supported = await Linking.canOpenURL(job.cv);
+            const supported = await Linking.canOpenURL(cv);
 
             if (supported) {
-                await Linking.openURL(job.cv);
+                await Linking.openURL(cv);
             } else {
                 Alert.alert("Lỗi", "Không thể mở file CV");
             }
@@ -124,8 +126,8 @@ const AppliedJobsTab = ({ navigation }) => {
         ({ item }) => (
             <AppliedJobCard
                 job={item}
-                onViewDetail={() => handleViewDetail(item)}
-                onViewCV={() => handleViewCV(item)}
+                onViewDetail={() => handleViewDetail(item.jobPostId)}
+                onViewCV={() => handleViewCV(item.cv)}
             />
         ),
         [navigation]
