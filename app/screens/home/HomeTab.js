@@ -10,9 +10,9 @@ import LoginPrompt from "../../components/LoginPrompt";
 import OverlayLoading from "../../components/loaders/OverlayLoading";
 
 import { getToken } from "../../utils/authStorage";
-import { getAllJobPosts, getPopularJobPosts } from "../../services/jobPostService";
+import { getAllJobPosts } from "../../services/jobPostService";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 4;
 
 const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,6 @@ const Home = ({ navigation }) => {
                 Alert.alert("Lỗi", data.message);
             }
         } catch (error) {
-            console.error("Fetch best jobs error:", error);
             Alert.alert("Lỗi", "Không thể tải việc làm nổi bật");
         }
     }, []);
@@ -75,26 +74,27 @@ const Home = ({ navigation }) => {
         }
     }, []);
 
-    // Initial load
-    useEffect(() => {
-        fetchBestJobs();
-    }, [fetchBestJobs]);
+    // // Initial load
+    // useEffect(() => {
+    //     fetchBestJobs();
+    // }, [fetchBestJobs]);
 
     // Focus effect
     useFocusEffect(
         useCallback(() => {
             fetchToken();
+            fetchBestJobs();
             setPage(1);
             loadData(1);
-        }, [fetchToken, loadData])
+        }, [fetchToken, fetchBestJobs, loadData])
     );
 
     // Refresh handler
     const handleRefresh = useCallback(() => {
         setIsRefreshing(true);
+        fetchBestJobs();
         setPage(1);
         loadData(1, true);
-        fetchBestJobs();
     }, [loadData, fetchBestJobs]);
 
     // Load more handler

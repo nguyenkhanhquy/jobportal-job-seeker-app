@@ -11,13 +11,14 @@ import EmptyCard from "../../components/card/EmptyCard";
 import { getAllJobPosts } from "../../services/jobPostService";
 
 export default function JobList({ route, navigation }) {
-    const searchQuery = route.params?.searchQuery;
+    const searchQuery = route.params?.searchQuery || "";
 
     const [loading, setLoading] = useState(true);
     const [listJobs, setListJobs] = useState([]);
     const [selectedSort, setSelectedSort] = useState(null);
     const [page, setPage] = useState(1);
     const [isFetchingMore, setIsFetchingMore] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [query, setQuery] = useState(searchQuery || "");
     const [debouncedQuery, setDebouncedQuery] = useState(searchQuery || "");
@@ -26,7 +27,7 @@ export default function JobList({ route, navigation }) {
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setDebouncedQuery(query);
-        }, 600); // Đợi 600ms sau khi người dùng ngừng gõ
+        }, 700); // Đợi 700ms sau khi người dùng ngừng gõ
 
         return () => clearTimeout(timeoutId);
     }, [query]);
@@ -40,9 +41,9 @@ export default function JobList({ route, navigation }) {
     }, [debouncedQuery, selectedSort]);
 
     const loadData = useCallback(
-        async (newPage = 1) => {
+        async (newPage = 1, isRefresh = false) => {
             try {
-                if (newPage === 1) {
+                if (newPage === 1 && !isRefresh) {
                     setLoading(true);
                     setHasMoreData(true); // Reset hasMoreData khi tìm kiếm mới
                 }
@@ -66,6 +67,7 @@ export default function JobList({ route, navigation }) {
             } finally {
                 setLoading(false);
                 setIsFetchingMore(false);
+                setIsRefreshing(false);
             }
         },
         [debouncedQuery, selectedSort]
@@ -77,6 +79,12 @@ export default function JobList({ route, navigation }) {
             loadData(1);
         }, [loadData])
     );
+
+    const handleRefresh = useCallback(() => {
+        setIsRefreshing(true);
+        setPage(1);
+        loadData(1, true);
+    }, [loadData]);
 
     const handleLoadMore = () => {
         if (!isFetchingMore && hasMoreData && !loading) {
@@ -138,16 +146,12 @@ export default function JobList({ route, navigation }) {
                         data={listJobs}
                         renderItem={renderJobItem}
                         keyExtractor={(item) => item.id.toString()}
-                        vertical={true}
+                        ListEmptyComponent={renderEmpty}
+                        refreshing={isRefreshing}
+                        onRefresh={handleRefresh}
                         onEndReached={handleLoadMore}
                         onEndReachedThreshold={0.5}
                         ListFooterComponent={renderFooter}
-                        ListEmptyComponent={renderEmpty}
-                        refreshing={loading && page === 1}
-                        onRefresh={() => {
-                            setPage(1);
-                            loadData(1);
-                        }}
                     />
                 )}
             </View>
