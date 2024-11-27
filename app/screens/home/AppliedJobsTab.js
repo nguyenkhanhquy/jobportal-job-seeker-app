@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { ActivityIndicator, Linking, Alert, View, FlatList, TextInput } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { ActivityIndicator, Linking, Alert, View, FlatList, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AppliedJobCard from "../../components/card/AppliedJobCard";
 import LoginPrompt from "../../components/LoginPrompt";
@@ -18,29 +17,11 @@ const AppliedJobsTab = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
     const [appliedJobs, setAppliedJobs] = useState([]);
+    const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(1);
     const [isFetchingMore, setIsFetchingMore] = useState(false);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [query, setQuery] = useState("");
-    const [debouncedQuery, setDebouncedQuery] = useState("");
-
-    // Xử lý debounce cho tìm kiếm
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setDebouncedQuery(query);
-        }, 600); // Đợi 600ms sau khi người dùng ngừng gõ
-
-        return () => clearTimeout(timeoutId);
-    }, [query]);
-
-    // Xử lý khi debounced query thay đổi
-    useEffect(() => {
-        if (debouncedQuery !== query) {
-            setPage(1);
-            loadData(1);
-        }
-    }, [debouncedQuery]);
 
     const loadData = useCallback(async (newPage = 1, isRefresh = false) => {
         const token = await getToken();
@@ -54,6 +35,7 @@ const AppliedJobsTab = ({ navigation }) => {
                 const data = await getAllJobApplied(newPage, ITEMS_PER_PAGE);
 
                 if (data.success) {
+                    setTotalElements(data.pageInfo.totalElements);
                     if (newPage === 1) {
                         setAppliedJobs(data.result);
                     } else {
@@ -155,15 +137,8 @@ const AppliedJobsTab = ({ navigation }) => {
                 <EmptyCard />
             ) : (
                 <>
-                    <View className="flex-row items-center bg-gray-100 rounded-lg py-3 px-5 my-5 mx-5 shadow-sm">
-                        <Ionicons name="search" size={24} color="#888" className="mr-3" />
-                        <TextInput
-                            className="flex-1 text-base text-gray-700"
-                            placeholder="Tìm kiếm công việc đã ứng tuyển"
-                            // value={query}
-                            // onChangeText={setQuery}
-                            // returnKeyType="search"
-                        />
+                    <View className="flex-row justify-between items-center my-2">
+                        <Text className="text-lg font-bold text-gray-800 ml-5">{totalElements} Đơn ứng tuyển </Text>
                     </View>
 
                     <View className="flex-1 px-5">
