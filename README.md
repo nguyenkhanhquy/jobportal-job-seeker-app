@@ -6,3 +6,7 @@
 1. [@NguyenDink](https://github.com/NguyenDink) - Đinh Trung Nguyên - 21110259
 1. [@DySn0512](https://github.com/DySn0512) - Nguyễn Duy Sơn - 21110290
 1. [@aiAmPhu](https://github.com/aiAmPhu) - Phạm Lê Thiên Phú - 21110274
+
+## References
+
+1. [Job Portal - Design & Docs](https://github.com/nguyenkhanhquy/jobportal-design-docs)
