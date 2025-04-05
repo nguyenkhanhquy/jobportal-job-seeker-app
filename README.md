@@ -9,4 +9,4 @@
 
 ## References
 
-1. [Job Portal - Design & Docs](https://github.com/nguyenkhanhquy/jobportal-design-docs)
+- [Job Portal - Design & Docs](https://github.com/nguyenkhanhquy/jobportal-design-docs)
