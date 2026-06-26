@@ -15,7 +15,7 @@
         "@react-navigation/native": "^7.3.4",
         "@react-navigation/stack": "^7.10.6",
         "axios": ">=1.18.1",
-        "expo": "^46.0.21",
+        "expo": "^56.0.12",
         "expo-document-picker": "~56.0.4",
         "expo-image-picker": "^56.0.18",
         "expo-secure-store": "^56.0.4",
